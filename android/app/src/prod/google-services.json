@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "580883741767",
+    "project_id": "flavoring-flutter-39191",
+    "storage_bucket": "flavoring-flutter-39191.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580883741767:android:7f060f25257fb78a30c562",
+        "android_client_info": {
+          "package_name": "com.example.flavoring.prod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580883741767-b64551pnvlueq033g90g9ev7nho1vgqe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAyUWiJcZ_F1BiNXAnG106AZHi4ii3CrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580883741767-b64551pnvlueq033g90g9ev7nho1vgqe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
