@@ -26,8 +26,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static const methodChannel = MethodChannel('test');
+  static const methodChannel = MethodChannel('com.flavoring/test');
   int _counter = 0;
+
+  Future<void> getLocationDescription() async {
+    String description = "";
+    try {
+      description = await methodChannel.invokeMethod('getMyLocation', 'hello');
+    } on PlatformException catch (e) {
+      description = "failed due to $e";
+    }
+    print(description);
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -56,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: getLocationDescription,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
