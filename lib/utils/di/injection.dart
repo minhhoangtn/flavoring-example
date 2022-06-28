@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flavoring/configuration/environment/env.dart';
+import 'package:flavoring/configuration/style/app_theme.dart';
 import 'package:flavoring/data/data_source/local/local_barrel.dart';
 import 'package:flavoring/data/data_source/remote/remote_barrel.dart';
 
 import 'package:flavoring/data/repository/repository_barrel.dart';
-import 'package:flavoring/domain/repository/repository_barrel.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,4 +53,6 @@ void _registerAppConfig(AppEnv flavor) {
       getIt.registerSingleton<AppConfig>(AppConfigProduct());
       break;
   }
+
+  getIt.registerSingleton<AppTheme>(AppTheme(CustomTheme.light));
 }

@@ -1,31 +1,36 @@
+import 'package:flavoring/configuration/style/app_theme.dart';
 import 'package:flavoring/presentation/home/home_page.dart';
+import 'package:flavoring/utils/di/injection.dart';
 import 'package:flutter/material.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  AppTheme appTheme = getIt<AppTheme>();
+  @override
+  void initState() {
+    super.initState();
+    appTheme.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    appTheme.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-
-      // home: Navigator(
-      //   onPopPage: (Route<dynamic> route, dynamic result) =>
-      //       route.didPop(result),
-      //   pages: [
-      //     MaterialPage(
-      //         child: Scaffold(
-      //       body: Container(
-      //         height: 200,
-      //         width: 200,
-      //         color: Colors.red,
-      //       ),
-      //     ))
-      //   ],
-      // ),
+      theme: appTheme.themeData,
       onGenerateRoute: (RouteSettings settings) {
         if (settings.name == '/') {
           return MaterialPageRoute(
