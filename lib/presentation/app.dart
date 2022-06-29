@@ -1,7 +1,12 @@
 import 'package:flavoring/configuration/style/app_theme.dart';
 import 'package:flavoring/presentation/home/home_page.dart';
+
+import 'package:flavoring/presentation/login/login_page.dart';
+import 'package:flavoring/presentation/splash/splash_page.dart';
 import 'package:flavoring/utils/di/injection.dart';
 import 'package:flutter/material.dart';
+
+import 'notification/home_page.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -32,12 +37,20 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: appTheme.themeData,
       onGenerateRoute: (RouteSettings settings) {
-        if (settings.name == '/') {
-          return MaterialPageRoute(
-              settings: settings,
-              builder: (context) {
-                return const MyHomePage(title: 'Flutter Demo Home Page');
-              });
+        Widget? page;
+        switch (settings.name) {
+          case '/':
+            page = const SplashPage();
+            break;
+          case '/home':
+            page = const HomePage();
+            break;
+          case '/notification':
+            page = const MyHomePage(title: 'demo');
+            break;
+          case '/login':
+            page = const LoginPage();
+            break;
         }
 
         ///Testing for Android applink
@@ -57,7 +70,7 @@ class _MyAppState extends State<MyApp> {
         return MaterialPageRoute(
             settings: settings,
             builder: (context) {
-              return const MyHomePage(title: 'Flutter Demo Home Page');
+              return page ?? const SplashPage();
             });
       },
     );

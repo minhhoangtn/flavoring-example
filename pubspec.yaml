@@ -41,7 +41,10 @@ dependencies:
   json_annotation: ^4.4.0
 
   #Local Storage
+  path_provider: ^2.0.11
   shared_preferences: ^2.0.15
+  hive: ^2.2.2
+  hive_flutter: ^1.1.0
 
   # Bloc Architecture
   flutter_bloc: ^8.0.1

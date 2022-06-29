@@ -1,3 +1,4 @@
+import 'package:flavoring/configuration/style/app_colors.dart';
 import 'package:flutter/material.dart';
 
 enum CustomTheme { light, dark }
@@ -15,7 +16,9 @@ class AppTheme extends ChangeNotifier {
     switch (currentTheme) {
       case CustomTheme.light:
         return ThemeData(
-            primarySwatch: Colors.teal,
+            primarySwatch: Colors.deepOrange,
+            textSelectionTheme:
+                TextSelectionThemeData(cursorColor: AppColor.orangeFF),
             inputDecorationTheme: const InputDecorationTheme());
       case CustomTheme.dark:
         return ThemeData(
