@@ -4,7 +4,7 @@ import 'package:flavoring/data/data_source/local/local_barrel.dart';
 import 'package:flavoring/data/model/entity/user/user_entity.dart';
 import 'package:flavoring/data/model/request/auth/login_request.dart';
 import 'package:flavoring/data/model/request/auth/register_request.dart';
-import 'package:flavoring/data/repository/auth/auth_repository.dart';
+
 import 'package:flavoring/presentation/common/common_barrel.dart';
 import 'package:flavoring/utils/di/injection.dart';
 import 'package:flutter/material.dart';
@@ -42,22 +42,22 @@ class LoginPage extends StatelessWidget {
                 ),
                 TextButton(
                     onPressed: () async {
-                      try {
-                        await getIt<AuthRepository>().registerAccount(
-                            RegisterRequest(
-                                email: 'minhhoang@mail',
-                                password: 'minhhoang',
-                                fullName: 'minh hoang nguyen viet'));
-                        UserEntity entity = await getIt<AuthRepository>().login(
-                            LoginRequest(
-                                email: 'minhhoang@mail',
-                                password: 'minhhoang'));
-                        print(entity);
-                      } on ErrorException catch (e) {
-                        print(e.errorMessage);
-                      }
+                      // try {
+                      //   await getIt<AuthRepository>().registerAccount(
+                      //       RegisterRequest(
+                      //           email: 'minhhoang@mail',
+                      //           password: 'minhhoang',
+                      //           fullName: 'minh hoang nguyen viet'));
+                      //   UserEntity entity = await getIt<AuthRepository>().login(
+                      //       LoginRequest(
+                      //           email: 'minhhoang@mail',
+                      //           password: 'minhhoang'));
+                      //   print(entity);
+                      // } on ErrorException catch (e) {
+                      //   print(e.errorMessage);
+                      // }
                       // getIt<HiveHelper>().test('helo hive');
-                      // Navigator.of(context).pushNamed('/home');
+                      Navigator.of(context).pushNamed('/home');
                     },
                     child: const Text('Go to home!'))
               ],

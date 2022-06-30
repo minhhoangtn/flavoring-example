@@ -6,8 +6,13 @@ import 'package:flavoring/data/model/entity/user/user_entity.dart';
 import 'package:flavoring/data/model/exception/error_exception.dart';
 import 'package:flavoring/data/model/request/auth/login_request.dart';
 import 'package:flavoring/data/model/request/auth/register_request.dart';
-import 'package:flavoring/data/repository/auth/auth_repository.dart';
 import 'package:uuid/uuid.dart';
+
+abstract class AuthRepository {
+  Future<UserEntity> login(LoginRequest param);
+
+  Future<void> registerAccount(RegisterRequest param);
+}
 
 class AuthRepositoryImpl implements AuthRepository {
   AuthService authService;
@@ -28,6 +33,7 @@ class AuthRepositoryImpl implements AuthRepository {
     if (userDBData == null) {
       throw (ErrorException('Dữ liệu DB đang null'));
     }
+
     final List<UserEntity> userList =
         userDBData.map((e) => UserEntity.fromJson(jsonDecode(e))).toList();
 

@@ -7,10 +7,8 @@ import 'package:flavoring/data/data_source/remote/remote_barrel.dart';
 import 'package:flavoring/data/repository/repository_barrel.dart';
 
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 GetIt getIt = GetIt.I;
 

@@ -9,7 +9,7 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Timer(const Duration(seconds: 3),
-        () => Navigator.of(context).pushNamed('/login'));
+        () => Navigator.of(context).pushReplacementNamed('/login'));
     return Scaffold(
       backgroundColor: AppColor.orangeFF,
       body: Center(
