@@ -1,8 +1,9 @@
-import 'package:flavoring/data/data_source/remote/auth_service.dart';
-import 'package:flavoring/data/repository/auth/auth_repository_impl.dart';
+import 'package:flavoring/data/model/entity/user/user_entity.dart';
+import 'package:flavoring/data/model/request/auth/login_request.dart';
+import 'package:flavoring/data/model/request/auth/register_request.dart';
 
-class AuthRepositoryImpl implements AuthRepository {
-  AuthService authService;
+abstract class AuthRepository {
+  Future<UserEntity> login(LoginRequest param);
 
-  AuthRepositoryImpl(this.authService);
+  Future<void> registerAccount(RegisterRequest param);
 }

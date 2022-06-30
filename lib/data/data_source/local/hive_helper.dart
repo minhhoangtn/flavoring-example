@@ -1,17 +1,44 @@
 import 'package:hive/hive.dart';
 
+enum HiveDB { user, task }
+
 class HiveHelper {
-  final Box<String> userDB;
-  final Box<String> taskDB;
+  static HiveHelper? _instance;
 
-  const HiveHelper({
-    required this.userDB,
-    required this.taskDB,
-  });
-
-  void test(String testcase) async {
-    await userDB.put('abc', testcase);
-    final a = await userDB.get('abc');
-    print(a);
+  static HiveHelper get instance {
+    _instance ??= HiveHelper._();
+    return _instance!;
   }
+
+  Future<bool> addItem<T>(HiveDB db, String id, T value) async {
+    try {
+      await Hive.box<T>(db.name).put(id, value);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  T? getItem<T>(HiveDB db, String id) {
+    try {
+      return Hive.box<T>(db.name).get(id);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  List<T>? getListItem<T>(HiveDB db) {
+    try {
+      return Hive.box<T>(db.name).values.toList();
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> init() async {
+    await Hive.openBox<String>(HiveDB.user.name);
+    await Hive.openBox<String>(HiveDB.task.name);
+  }
+
+  HiveHelper._();
 }

@@ -3,11 +3,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum SharedPreferenceKey { tokenKey, test }
 
 class SharedPreferenceHelper {
-  final SharedPreferences instance;
-  SharedPreferenceHelper(this.instance);
+  static SharedPreferenceHelper? _instance;
+  late final SharedPreferences sharedPreferences;
+
+  static SharedPreferenceHelper get instance {
+    _instance ??= SharedPreferenceHelper._();
+    return _instance!;
+  }
+
+  Future<void> init() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  SharedPreferenceHelper._();
 
   Future<bool> setString(SharedPreferenceKey key, String value) =>
-      instance.setString(key.name, value);
+      sharedPreferences.setString(key.name, value);
 
-  String? getString(SharedPreferenceKey key) => instance.getString(key.name);
+  String? getString(SharedPreferenceKey key) =>
+      sharedPreferences.getString(key.name);
 }

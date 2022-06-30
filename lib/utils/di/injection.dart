@@ -36,21 +36,24 @@ void _registerRepository() {
 
 Future<void> _registerLocalStorage() async {
   ///SHARED PREFERENCE
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
-  getIt.registerSingleton<SharedPreferences>(sharedPreferences);
-
-  getIt.registerSingleton<SharedPreferenceHelper>(
-      SharedPreferenceHelper(getIt<SharedPreferences>()));
+  // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //
+  // getIt.registerSingleton<SharedPreferences>(sharedPreferences);
+  //
+  // getIt.registerSingleton<SharedPreferenceHelper>(
+  //     SharedPreferenceHelper(getIt<SharedPreferences>()));
+  await SharedPreferenceHelper.instance.init();
 
   ///HIVE
   final directory = await getApplicationDocumentsDirectory();
   await Hive.initFlutter(directory.path);
 
-  final userBox = await Hive.openBox<String>('user');
-  final taskBox = await Hive.openBox<String>('task');
-  getIt.registerSingleton<HiveHelper>(
-      HiveHelper(userDB: userBox, taskDB: taskBox));
+  await HiveHelper.instance.init();
+  //
+  // final userBox = await Hive.openBox<String>('user');
+  // final taskBox = await Hive.openBox<String>('task');
+  // getIt.registerSingleton<HiveHelper>(
+  //     HiveHelper(userDB: userBox, taskDB: taskBox));
 }
 
 void _registerAppConfig(AppEnv flavor) {
