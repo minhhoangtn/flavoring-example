@@ -73,6 +73,7 @@ class AuthRepositoryImpl implements AuthRepository {
     if (userList[query].password != param.password) {
       throw (ErrorException('Mật khẩu sai'));
     }
+
     return userList[query];
   }
 }

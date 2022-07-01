@@ -4,6 +4,8 @@ import 'package:flavoring/data/data_source/local/local_barrel.dart';
 import 'package:flavoring/data/model/entity/user/user_entity.dart';
 import 'package:flavoring/data/model/request/auth/login_request.dart';
 import 'package:flavoring/data/model/request/auth/register_request.dart';
+import 'package:flavoring/data/model/request/task/add_task_request.dart';
+import 'package:flavoring/data/repository/repository_barrel.dart';
 
 import 'package:flavoring/presentation/common/common_barrel.dart';
 import 'package:flavoring/utils/di/injection.dart';
@@ -42,6 +44,15 @@ class LoginPage extends StatelessWidget {
                 ),
                 TextButton(
                     onPressed: () async {
+                      try {
+                        await getIt<TaskRepository>().addTask(AddTaskRequest(
+                            title: 'Number02', note: "helo", deadline: 10));
+                        final tasks =
+                            await getIt<TaskRepository>().fetchListTask();
+                        print(tasks);
+                      } on ErrorException catch (e) {
+                        print(e.errorMessage);
+                      }
                       // try {
                       //   await getIt<AuthRepository>().registerAccount(
                       //       RegisterRequest(
@@ -57,7 +68,6 @@ class LoginPage extends StatelessWidget {
                       //   print(e.errorMessage);
                       // }
                       // getIt<HiveHelper>().test('helo hive');
-                      Navigator.of(context).pushNamed('/home');
                     },
                     child: const Text('Go to home!'))
               ],

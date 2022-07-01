@@ -2,7 +2,8 @@ import 'package:flavoring/configuration/style/style_barrel.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String? route;
+  const HomePage({Key? key, this.route}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class HomePage extends StatelessWidget {
         title: Row(
           children: [
             Text(
-              'Taskker',
+              route ?? 'Taskker',
               style: AppTextStyle.black(20, weight: FontWeight.bold),
             )
           ],

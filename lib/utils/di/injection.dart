@@ -30,6 +30,8 @@ void _registerNetworkComponent() {
 void _registerRepository() {
   getIt.registerFactory<AuthRepository>(
       () => AuthRepositoryImpl(getIt<AuthService>()));
+
+  getIt.registerFactory<TaskRepository>(() => TaskRepositoryImpl());
 }
 
 Future<void> _registerLocalStorage() async {
@@ -67,5 +69,5 @@ void _registerAppConfig(AppEnv flavor) {
       break;
   }
 
-  getIt.registerSingleton<AppTheme>(AppTheme(CustomTheme.light));
+  // getIt.registerSingleton<AppTheme>(AppTheme(CustomTheme.light));
 }

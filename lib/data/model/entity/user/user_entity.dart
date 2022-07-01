@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_entity.g.dart';
 
 @JsonSerializable()
-class UserEntity {
+class UserEntity extends Equatable {
   final String id;
   final String email;
   final String password;
@@ -25,4 +26,7 @@ class UserEntity {
   String toString() {
     return 'UserEntity{id: $id, email: $email, password: $password, fullName: $fullName}';
   }
+
+  @override
+  List<Object> get props => [id, email, password, fullName];
 }
