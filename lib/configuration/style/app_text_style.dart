@@ -19,7 +19,7 @@ class AppTextStyle {
   static TextStyle orange(double size,
       {FontWeight weight = FontWeight.normal}) {
     return TextStyle(
-        fontSize: size, fontWeight: weight, color: AppColor.orangeFF);
+        fontSize: size, fontWeight: weight, color: AppColor.orangeE6);
   }
 
   static TextStyle hintText(double size,

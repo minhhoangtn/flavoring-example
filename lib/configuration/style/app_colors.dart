@@ -15,6 +15,7 @@ class AppColor {
   static Color orangeFF = const Color(0xFFF57C00);
   static Color orangeFD = const Color(0xFFfdb766);
   static Color orangeEE = const Color(0xFFeedfc7);
+  static Color orangeE6 = const Color(0xffe64a19);
 
   ///Text
   static Color redError = Colors.red;

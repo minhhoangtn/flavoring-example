@@ -22,7 +22,7 @@ class AppTheme extends ChangeNotifier {
             inputDecorationTheme: const InputDecorationTheme());
       case CustomTheme.dark:
         return ThemeData(
-            primarySwatch: Colors.red,
+            primarySwatch: Colors.deepOrange,
             inputDecorationTheme: const InputDecorationTheme());
     }
   }
