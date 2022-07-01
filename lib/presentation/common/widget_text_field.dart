@@ -49,7 +49,7 @@ class WidgetTextField extends StatelessWidget {
       obscuringCharacter: "*",
       enabled: enable,
       controller: controller,
-      maxLines: maxLine,
+      maxLines: obscureText != null ? 1 : maxLine,
       decoration: InputDecoration(
         filled: enable ? null : true,
         fillColor: enable ? null : AppColor.whiteFD,

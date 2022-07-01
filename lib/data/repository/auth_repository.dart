@@ -12,6 +12,7 @@ abstract class AuthRepository {
   Future<UserEntity> login(LoginRequest param);
 
   Future<void> registerAccount(RegisterRequest param);
+  Future<void> logout();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -76,4 +77,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
     return userList[query];
   }
+
+  @override
+  Future<void> logout() async {}
 }

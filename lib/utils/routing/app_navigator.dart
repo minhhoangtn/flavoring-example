@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppRouting {
+class AppNavigator {
   static final GlobalKey<NavigatorState> _rootNavigator =
       GlobalKey<NavigatorState>();
 

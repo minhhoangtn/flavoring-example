@@ -1,5 +1,7 @@
 import 'package:flavoring/configuration/style/style_barrel.dart';
+import 'package:flavoring/presentation/auth/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
   final String? route;
@@ -21,7 +23,14 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Column(),
+      body: Center(
+        child: GestureDetector(
+            onTap: () {
+              context.read<AuthBloc>().add(const LoggedOut());
+              print('log out');
+            },
+            child: const Text('log out')),
+      ),
     );
   }
 }

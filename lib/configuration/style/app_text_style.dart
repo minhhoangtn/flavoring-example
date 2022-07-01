@@ -11,12 +11,25 @@ class AppTextStyle {
         fontSize: size, fontWeight: weight, color: AppColor.whiteFD);
   }
 
-  static TextStyle hintText(double size, {FontWeight weight = FontWeight.normal}) {
+  static TextStyle grey(double size, {FontWeight weight = FontWeight.normal}) {
+    return TextStyle(
+        fontSize: size, fontWeight: weight, color: AppColor.greyMaterial);
+  }
+
+  static TextStyle orange(double size,
+      {FontWeight weight = FontWeight.normal}) {
+    return TextStyle(
+        fontSize: size, fontWeight: weight, color: AppColor.orangeFF);
+  }
+
+  static TextStyle hintText(double size,
+      {FontWeight weight = FontWeight.normal}) {
     return TextStyle(
         fontSize: size, fontWeight: weight, color: AppColor.greyHint);
   }
 
-  static TextStyle errorText(double size, {FontWeight weight = FontWeight.normal}) {
+  static TextStyle errorText(double size,
+      {FontWeight weight = FontWeight.normal}) {
     return TextStyle(
         fontSize: size, fontWeight: weight, color: AppColor.redError);
   }

@@ -2,13 +2,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flavoring/configuration/environment/env.dart';
 import 'package:flavoring/data/data_source/local/shared_preference_helper.dart';
 import 'package:flavoring/main_DEV.dart';
+
 import 'package:flavoring/utils/di/injection.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-import '../count-down/count_down_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -26,14 +25,14 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _fcmBody;
 
   Future<void> getLocationDescription() async {
-    // String description = "";
-    // try {
-    //   description = await methodChannel.invokeMethod('getMyLocation', 'hello');
-    // } on PlatformException catch (e) {
-    //   description = "failed due to $e";
-    // }
+    String description = "";
+    try {
+      description = await methodChannel.invokeMethod('getMyLocation', 'hello');
+    } on PlatformException catch (e) {
+      description = "failed due to $e";
+    }
 
-    // print(description);
+    print(description);
   }
 
   Future<void> configureCloudMessagingNotification() async {
@@ -105,10 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => CountDownPage()));
-              },
+              onPressed: getLocationDescription,
               child: const Icon(Icons.navigate_next),
             ),
           ],

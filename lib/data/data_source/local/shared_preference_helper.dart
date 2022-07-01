@@ -22,4 +22,7 @@ class SharedPreferenceHelper {
 
   String? getString(SharedPreferenceKey key) =>
       sharedPreferences.getString(key.name);
+
+  Future<bool> removeString(SharedPreferenceKey key) =>
+      sharedPreferences.remove(key.name);
 }

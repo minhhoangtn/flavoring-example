@@ -28,7 +28,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 password: 'hoang')));
       }
     });
-    on<LoggedIn>((event, emit) {});
-    on<LoggedOut>((event, emit) {});
+    on<LoggedIn>((event, emit) async {
+      final saveResult = await AppSession.saveAccessToken(event.userInfo.id);
+      if (!saveResult) throw ('lỗi rồi');
+
+      emit(Authenticated(userInfo: event.userInfo));
+    });
+    on<LoggedOut>((event, emit) async {
+      final saveResult = await AppSession.removeAccessToken();
+      if (!saveResult) throw ('lỗi rồi');
+      emit(const Unauthenticated());
+    });
   }
 }
