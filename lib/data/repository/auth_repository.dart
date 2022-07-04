@@ -9,8 +9,8 @@ import 'package:flavoring/data/model/request/auth/register_request.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class AuthRepository {
+  UserEntity autoLogin(String token);
   Future<UserEntity> login(LoginRequest param);
-
   Future<void> registerAccount(RegisterRequest param);
   Future<void> logout();
 }
@@ -80,4 +80,16 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {}
+
+  @override
+  UserEntity autoLogin(String token) {
+    final List<String> userDBData =
+        HiveHelper.instance.getListItem<String>(HiveDB.user)!;
+
+    final List<UserEntity> userList =
+        userDBData.map((e) => UserEntity.fromJson(jsonDecode(e))).toList();
+
+    final user = userList.firstWhere((element) => element.id == token);
+    return user;
+  }
 }

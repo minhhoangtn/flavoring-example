@@ -31,4 +31,16 @@ class TaskEntity {
     required this.createdAt,
     this.isDone = false,
   });
+
+  TaskEntity copyWithNewStatus() {
+    return TaskEntity(
+      id: id,
+      userId: userId,
+      title: title,
+      note: note,
+      deadline: deadline,
+      isDone: !isDone,
+      createdAt: createdAt,
+    );
+  }
 }

@@ -20,12 +20,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const Unauthenticated());
       } else {
         print('go home');
-        emit(const Authenticated(
-            userInfo: UserEntity(
-                id: 'abc',
-                fullName: 'hoang minh',
-                email: 'hoang@maik',
-                password: 'hoang')));
+        final userInfo = authRepository.autoLogin(token);
+        emit(Authenticated(userInfo: userInfo));
       }
     });
     on<LoggedIn>((event, emit) async {

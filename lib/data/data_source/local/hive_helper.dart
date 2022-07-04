@@ -10,6 +10,15 @@ class HiveHelper {
     return _instance!;
   }
 
+  Future<bool> deleteItem<T>(HiveDB db, String id) async {
+    try {
+      await Hive.box<T>(db.name).delete(id);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<bool> addItem<T>(HiveDB db, String id, T value) async {
     try {
       await Hive.box<T>(db.name).put(id, value);

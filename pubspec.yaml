@@ -57,6 +57,10 @@ dependencies:
   # Dependency Inversion
   get_it: ^7.2.0
 
+  # Multi-language
+  intl: ^0.17.0
+
+
   uuid: ^3.0.6
 
 dev_dependencies:

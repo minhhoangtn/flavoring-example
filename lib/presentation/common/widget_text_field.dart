@@ -13,7 +13,7 @@ class WidgetTextField extends StatelessWidget {
 
   final AutovalidateMode? autoValidateMode;
   final String? initialValue;
-  final bool? obscureText;
+  final bool obscureText;
   final Widget? suffixIcon;
   final bool? readOnly;
   final VoidCallback? onTap;
@@ -45,11 +45,11 @@ class WidgetTextField extends StatelessWidget {
     return TextFormField(
       onTap: onTap,
       readOnly: readOnly ?? false,
-      obscureText: obscureText!,
+      obscureText: obscureText,
       obscuringCharacter: "*",
       enabled: enable,
       controller: controller,
-      maxLines: obscureText != null ? 1 : maxLine,
+      maxLines: obscureText ? 1 : maxLine,
       decoration: InputDecoration(
         filled: enable ? null : true,
         fillColor: enable ? null : AppColor.whiteFD,

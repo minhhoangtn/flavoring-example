@@ -40,6 +40,7 @@ class _MyAppState extends State<MyApp> {
       create: (context) => AuthBloc(getIt<AuthRepository>()),
       child: MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         navigatorKey: AppNavigator.rootKey,
         theme: appTheme.themeData,
         onGenerateRoute: AppRoute.generateRoute,
