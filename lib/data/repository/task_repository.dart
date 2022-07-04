@@ -9,6 +9,8 @@ import 'package:uuid/uuid.dart';
 abstract class TaskRepository {
   Future<TaskEntity> addTask(AddTaskRequest param, String userId);
 
+  Future<bool> updateTask(TaskEntity task);
+
   Future<List<TaskEntity>> fetchListTask(String userId);
   Future<bool> deleteTask(String taskId);
   Future<bool> changeStatus(String taskId);
@@ -67,6 +69,14 @@ class TaskRepositoryImpl implements TaskRepository {
     final dbItemData = HiveHelper.instance.getItem<String>(HiveDB.task, taskId);
     var task = TaskEntity.fromJson(jsonDecode(dbItemData!));
     task = task.copyWithNewStatus();
+    return await HiveHelper.instance
+        .addItem<String>(HiveDB.task, taskId, jsonEncode(task.toJson()));
+  }
+
+  @override
+  Future<bool> updateTask(TaskEntity task) async {
+    await Future.delayed(const Duration(seconds: 2));
+    final taskId = task.id;
     return await HiveHelper.instance
         .addItem<String>(HiveDB.task, taskId, jsonEncode(task.toJson()));
   }

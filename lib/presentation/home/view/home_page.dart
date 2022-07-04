@@ -1,10 +1,10 @@
-import 'package:flavoring/configuration/style/style_barrel.dart';
+import 'package:flavoring/data/model/entity/user/user_entity.dart';
 import 'package:flavoring/presentation/auth/bloc/auth_bloc.dart';
 import 'package:flavoring/presentation/home/bloc/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'widget/home_widget_barrel.dart';
+import 'widget/widget_barrel.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,14 +15,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late HomeCubit cubit;
-  late String userId;
+  late UserEntity user;
 
   @override
   void initState() {
     cubit = context.read<HomeCubit>();
-    userId = (context.read<AuthBloc>().state as Authenticated).userInfo.id;
+    user = (context.read<AuthBloc>().state as Authenticated).userInfo;
     super.initState();
-    cubit.fetchList(userId);
+    cubit.fetchList(user.id);
   }
 
   @override
@@ -33,27 +33,43 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          Container(
-            width: double.infinity,
-            height: 1,
-            color: AppColor.greyCF,
-          ),
           Expanded(
             child: BlocBuilder<HomeCubit, HomeState>(
               builder: (context, state) {
                 switch (state.status) {
                   case ListStatus.success:
-                    return ListView.builder(
-                      itemBuilder: (_, index) => WidgetTaskItem(
-                        key: UniqueKey(),
-                        item: state.tasks[index],
-                        onPressed: () =>
-                            cubit.deleteTask(state.tasks[index].id),
-                        onChangeStatus: () =>
-                            cubit.changeTaskStatus(state.tasks[index].id),
-                      ),
-                      itemCount: state.tasks.length,
-                    );
+                    return state.tasks.isEmpty
+                        ? const Center(
+                            child: Text('Bạn đang không có task nào'),
+                          )
+                        : ListView.separated(
+                            reverse: true,
+                            separatorBuilder: (_, index) =>
+                                const SizedBox(height: 10),
+                            itemBuilder: (context, index) {
+                              if (index == state.tasks.length) {
+                                return Builder(builder: (context) {
+                                  final undoneTasks = state.tasks
+                                      .where((element) => !element.isDone)
+                                      .toList();
+                                  return WidgetHeader(
+                                    username: user.fullName,
+                                    undoneTaskCount: undoneTasks.length,
+                                  );
+                                });
+                              } else {
+                                final task = state.tasks[index];
+                                return WidgetTaskItem(
+                                  item: task,
+                                  onPressed: () => cubit.deleteTask(task.id),
+                                  onChangeStatus: () =>
+                                      cubit.changeTaskStatus(task.id),
+                                  onItemChanged: () => cubit.fetchList(user.id),
+                                );
+                              }
+                            },
+                            itemCount: state.tasks.length + 1,
+                          );
                   case ListStatus.loading:
                     return const Center(child: CircularProgressIndicator());
                   case ListStatus.failure:
@@ -62,7 +78,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-          WidgetAddTask(cubit: cubit, userId: userId)
+          WidgetAddTask(cubit: cubit, userId: user.id)
         ],
       ),
     );

@@ -43,4 +43,35 @@ class TaskEntity {
       createdAt: createdAt,
     );
   }
+
+  @override
+  List<Object> get props => [
+        id,
+        userId,
+        title,
+        note,
+        deadline,
+        isDone,
+        createdAt,
+      ];
+
+  TaskEntity copyWith({
+    String? id,
+    String? userId,
+    String? title,
+    String? note,
+    int? deadline,
+    bool? isDone,
+    int? createdAt,
+  }) {
+    return TaskEntity(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      title: title ?? this.title,
+      note: note ?? this.note,
+      deadline: deadline ?? this.deadline,
+      isDone: isDone ?? this.isDone,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }

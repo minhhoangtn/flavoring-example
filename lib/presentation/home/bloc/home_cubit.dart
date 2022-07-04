@@ -13,6 +13,7 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.repository) : super(const HomeState.loading());
 
   Future<void> fetchList(String userId) async {
+    emit(const HomeState.loading());
     try {
       final tasks = await repository.fetchListTask(userId);
       emit(HomeState.success(tasks));
@@ -23,9 +24,6 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> addTask(
       String title, String note, DateTime deadline, String userId) async {
-    print(deadline);
-    print(title);
-    print(note);
     emit(HomeState.loadingMore(state.tasks));
     final param = AddTaskRequest(
         title: title, note: note, deadline: deadline.millisecondsSinceEpoch);
@@ -51,13 +49,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> changeTaskStatus(String taskId) async {
-    print('start change sttatus');
-    final currentTasks = state.tasks.map((e) => e).toList();
     final newTasks = state.tasks.map((e) => e).toList();
     final taskIndex = newTasks.indexWhere((element) => element.id == taskId);
     newTasks[taskIndex] = newTasks[taskIndex].copyWithNewStatus();
     emit(HomeState.success(newTasks));
 
-    final isSuccess = await repository.changeStatus(taskId);
+    await repository.changeStatus(taskId);
   }
 }
