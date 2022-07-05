@@ -25,7 +25,7 @@ class TaskDetailCubit extends Cubit<TaskDetailState> {
     if (result) {
       if (isReceiveNotification) {
         await localNotificationsPlugin.cancel(currentState.id.hashCode);
-        final androidChannel = androidCustomChannel;
+        final androidChannel = androidLocalChannel;
         await localNotificationsPlugin.zonedSchedule(
             currentState.id.hashCode,
             currentState.title,
@@ -35,7 +35,8 @@ class TaskDetailCubit extends Cubit<TaskDetailState> {
             NotificationDetails(
                 android: AndroidNotificationDetails(
                     androidChannel.id, androidChannel.name,
-                    channelDescription: androidChannel.description)),
+                    channelDescription: androidChannel.description,
+                    importance: Importance.max)),
             payload: currentState.id,
             androidAllowWhileIdle: true,
             uiLocalNotificationDateInterpretation:

@@ -36,14 +36,14 @@ class TaskEntity extends Equatable {
 
   TaskEntity copyWithNewStatus() {
     return TaskEntity(
-      id: id,
-      userId: userId,
-      title: title,
-      note: note,
-      deadline: deadline,
-      isDone: !isDone,
-      createdAt: createdAt,
-    );
+        id: id,
+        userId: userId,
+        title: title,
+        note: note,
+        deadline: deadline,
+        isDone: !isDone,
+        createdAt: createdAt,
+        isReceiveNotification: isReceiveNotification);
   }
 
   @override

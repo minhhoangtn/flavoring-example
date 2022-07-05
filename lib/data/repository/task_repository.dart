@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flavoring/core/db_helper/hive_helper.dart';
 import 'package:flavoring/data/data_source/local/local_barrel.dart';
 import 'package:flavoring/data/model/entity/task/task_entity.dart';
 import 'package:flavoring/data/model/exception/error_exception.dart';
@@ -25,63 +22,71 @@ class TaskRepositoryImpl implements TaskRepository {
 
   @override
   Future<TaskEntity> addTask(AddTaskRequest param, String userId) async {
-    await Future.delayed(const Duration(seconds: 2));
-    String taskId = const Uuid().v1();
-    final task = TaskEntity(
-        id: taskId,
-        userId: userId,
-        title: param.title,
-        note: param.note,
-        deadline: param.deadline,
-        createdAt: DateTime.now().millisecondsSinceEpoch);
-    final result = await HiveHelper.instance
-        .addItem<String>(HiveDB.task, taskId, jsonEncode(task.toJson()));
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+      String taskId = const Uuid().v1();
+      final task = TaskEntity(
+          id: taskId,
+          userId: userId,
+          title: param.title,
+          note: param.note,
+          deadline: param.deadline,
+          createdAt: DateTime.now().millisecondsSinceEpoch);
+      await taskDAO.addTask(task);
 
-    if (!result) {
-      throw (ErrorException('Không thể thêm vào DB'));
-    } else {
       return task;
+    } on ErrorException catch (_) {
+      rethrow;
     }
   }
 
   @override
   Future<List<TaskEntity>> fetchListTask(String userId) async {
-    await Future.delayed(const Duration(seconds: 2));
-    final List<String>? taskDBData =
-        HiveHelper.instance.getListItem<String>(HiveDB.task);
-    if (taskDBData == null) {
-      throw (ErrorException('Dữ liệu DB đang null'));
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+      final userTasks = taskDAO.getAllUserTask(userId);
+      return userTasks;
+    } on ErrorException catch (_) {
+      rethrow;
     }
-
-    final taskList =
-        taskDBData.map((e) => TaskEntity.fromJson(jsonDecode(e))).toList();
-
-    final userTasks =
-        taskList.where((element) => element.userId == userId).toList();
-    return userTasks;
   }
 
   @override
   Future<bool> deleteTask(String taskId) async {
-    await Future.delayed(const Duration(seconds: 2));
-    return await HiveHelper.instance.deleteItem<String>(HiveDB.task, taskId);
-  }
-
-  @override
-  Future<bool> changeStatus(String taskId) async {
-    await Future.delayed(const Duration(seconds: 2));
-    final dbItemData = HiveHelper.instance.getItem<String>(HiveDB.task, taskId);
-    var task = TaskEntity.fromJson(jsonDecode(dbItemData!));
-    task = task.copyWithNewStatus();
-    return await HiveHelper.instance
-        .addItem<String>(HiveDB.task, taskId, jsonEncode(task.toJson()));
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+      await taskDAO.deleteTask(taskId);
+      return true;
+    } on ErrorException catch (_) {
+      return false;
+    }
   }
 
   @override
   Future<bool> updateTask(TaskEntity task) async {
-    await Future.delayed(const Duration(seconds: 2));
-    final taskId = task.id;
-    return await HiveHelper.instance
-        .addItem<String>(HiveDB.task, taskId, jsonEncode(task.toJson()));
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+      final taskId = task.id;
+      await taskDAO.updateTask(task, taskId);
+      return true;
+    } on ErrorException catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> changeStatus(String taskId) async {
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+
+      var task = taskDAO.getTaskDetail(taskId);
+      task = task.copyWithNewStatus();
+
+      await taskDAO.updateTask(task, taskId);
+
+      return true;
+    } on ErrorException catch (e) {
+      return false;
+    }
   }
 }

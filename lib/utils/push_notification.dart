@@ -1,9 +1,13 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-AndroidNotificationChannel androidCustomChannel =
+AndroidNotificationChannel androidFCMChannel = const AndroidNotificationChannel(
+    'notification_channel_testId', 'notification_channel_testName',
+    description: 'notification test channel', importance: Importance.max);
+
+AndroidNotificationChannel androidLocalChannel =
     const AndroidNotificationChannel(
-        'notification_channel_testId', 'notification_channel_testName',
-        importance: Importance.max);
+        'local_channel_testId', 'local_channel_testName',
+        description: 'local test channel', importance: Importance.max);
 
 final FlutterLocalNotificationsPlugin localNotificationsPlugin =
     FlutterLocalNotificationsPlugin();

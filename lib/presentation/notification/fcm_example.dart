@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
     await localNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(androidCustomChannel);
+        ?.createNotificationChannel(androidFCMChannel);
 
     fcmListenHandler();
 

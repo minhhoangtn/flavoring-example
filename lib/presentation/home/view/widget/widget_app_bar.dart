@@ -1,8 +1,10 @@
 import 'package:flavoring/configuration/style/style_barrel.dart';
 import 'package:flavoring/presentation/auth/bloc/auth_bloc.dart';
 import 'package:flavoring/presentation/common/common_barrel.dart';
+import 'package:flavoring/utils/push_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class WidgetAppBar extends AppBar {
   final BuildContext context;

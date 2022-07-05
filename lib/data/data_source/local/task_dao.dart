@@ -51,12 +51,14 @@ class TaskDAOImpl implements TaskDAO {
       throw (ErrorException('Lỗi xảy ra ở HIVE'));
     }
 
-    return dbData.map((e) => TaskEntity.fromJson(jsonDecode(e))).toList();
+    final allTask =
+        dbData.map((e) => TaskEntity.fromJson(jsonDecode(e))).toList();
+    return allTask.where((element) => element.userId == userId).toList();
   }
 
   @override
   TaskEntity getTaskDetail(String taskId) {
-    final dbData = HiveHelper.instance.getItem(HiveDB.task, taskId);
+    final dbData = HiveHelper.instance.getItem<String>(HiveDB.task, taskId);
     if (dbData == null) {
       throw (ErrorException('Lỗi xảy ra ở HIVE'));
     }
