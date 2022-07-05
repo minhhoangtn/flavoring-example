@@ -1,7 +1,7 @@
 import 'package:flavoring/configuration/style/style_barrel.dart';
 import 'package:flavoring/presentation/common/common_barrel.dart';
 import 'package:flavoring/presentation/task_detail/bloc/task_detail_cubit.dart';
-import 'package:flavoring/utils/keyboard_utils.dart';
+import 'package:flavoring/core/utils/keyboard_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

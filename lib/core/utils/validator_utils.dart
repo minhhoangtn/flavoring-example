@@ -1,5 +1,10 @@
+import 'package:flavoring/core/extension/extension_barrel.dart';
+
 class ValidatorUtils {
   static bool validateEmpty(String? text) => text == null || (text).isEmpty;
+
+  static bool validateLateTime(String dateTime) =>
+      dateTime.toDateTime().isBefore(DateTime.now());
 
   /// Không giới hạn ký tự.
   static bool validateFullName(String string) {

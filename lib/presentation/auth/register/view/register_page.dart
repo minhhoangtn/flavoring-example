@@ -1,7 +1,7 @@
 import 'package:flavoring/configuration/style/style_barrel.dart';
 import 'package:flavoring/presentation/auth/register/bloc/register_cubit.dart';
-import 'package:flavoring/utils/keyboard_utils.dart';
-import 'package:flavoring/utils/validator_utils.dart';
+import 'package:flavoring/core/utils/keyboard_utils.dart';
+import 'package:flavoring/core/utils/validator_utils.dart';
 
 import 'package:flavoring/presentation/common/common_barrel.dart';
 

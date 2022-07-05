@@ -4,7 +4,7 @@ import 'package:flavoring/configuration/style/app_theme.dart';
 import 'package:flavoring/data/repository/auth_repository.dart';
 
 import 'package:flavoring/utils/di/injection.dart';
-import 'package:flavoring/utils/keyboard_utils.dart';
+import 'package:flavoring/core/utils/keyboard_utils.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

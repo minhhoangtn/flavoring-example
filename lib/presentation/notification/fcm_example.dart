@@ -1,10 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flavoring/configuration/environment/env.dart';
-import 'package:flavoring/data/data_source/local/shared_preference_helper.dart';
-import 'package:flavoring/main_DEV.dart';
 
-import 'package:flavoring/utils/di/injection.dart';
 import 'package:flavoring/utils/push_notification.dart';
 
 import 'package:flutter/material.dart';

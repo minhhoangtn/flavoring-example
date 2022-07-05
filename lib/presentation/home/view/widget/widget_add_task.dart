@@ -1,9 +1,9 @@
 import 'package:flavoring/configuration/style/style_barrel.dart';
-import 'package:flavoring/core/core.dart';
+import 'package:flavoring/core/extension/extension_barrel.dart';
 import 'package:flavoring/presentation/common/common_barrel.dart';
 import 'package:flavoring/presentation/home/bloc/home_cubit.dart';
-import 'package:flavoring/utils/keyboard_utils.dart';
-import 'package:flavoring/utils/validator_utils.dart';
+import 'package:flavoring/core/utils/keyboard_utils.dart';
+import 'package:flavoring/core/utils/validator_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

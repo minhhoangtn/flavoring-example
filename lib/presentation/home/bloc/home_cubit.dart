@@ -4,6 +4,7 @@ import 'package:flavoring/data/model/entity/task/task_entity.dart';
 import 'package:flavoring/data/model/exception/error_exception.dart';
 import 'package:flavoring/data/model/request/task/add_task_request.dart';
 import 'package:flavoring/data/repository/repository_barrel.dart';
+import 'package:flavoring/utils/push_notification.dart';
 
 part 'home_state.dart';
 
@@ -17,7 +18,7 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final tasks = await repository.fetchListTask(userId);
       emit(HomeState.success(tasks));
-    } on ErrorException catch (e) {
+    } on ErrorException catch (_) {
       emit(const HomeState.failure());
     }
   }
@@ -45,6 +46,11 @@ class HomeCubit extends Cubit<HomeState> {
     final isSuccess = await repository.deleteTask(taskId);
     if (!isSuccess) {
       emit(HomeState.success(currentTasks));
+    } else {
+      await localNotificationsPlugin.cancel(currentTasks
+          .firstWhere((element) => element.id == taskId)
+          .id
+          .hashCode);
     }
   }
 

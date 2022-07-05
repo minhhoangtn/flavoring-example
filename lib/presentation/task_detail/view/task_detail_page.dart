@@ -2,10 +2,10 @@ import 'package:flavoring/data/model/entity/task/task_entity.dart';
 import 'package:flavoring/presentation/common/common_barrel.dart';
 import 'package:flavoring/presentation/task_detail/bloc/task_detail_cubit.dart';
 import 'package:flavoring/presentation/task_detail/view/widget/widget_barrel.dart';
-import 'package:flavoring/utils/validator_utils.dart';
+import 'package:flavoring/core/utils/validator_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flavoring/core/core.dart';
+import 'package:flavoring/core/extension/extension_barrel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TaskDetailPage extends StatefulWidget {
@@ -79,7 +79,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                   return WidgetSwitch(
                     title: 'Hoàn thành',
                     value: state.newState!.isDone,
-                    onTap: () => cubit.changeIsDoneStatus(widget.task.id),
+                    onTap: () => cubit.changeIsDoneStatus(),
                   );
                 },
               ),
@@ -90,7 +90,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                   return WidgetSwitch(
                     title: 'Nhận thông báo',
                     value: state.newState!.isReceiveNotification,
-                    onTap: () {},
+                    onTap: () => cubit.changeReceiveNotification(),
                   );
                 },
               ),
@@ -118,6 +118,8 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
       validator: (value) {
         if (ValidatorUtils.validateEmpty(value)) {
           return 'Chọn hạn chót';
+        } else if (ValidatorUtils.validateLateTime(value!)) {
+          return 'Deadline đã quá hạn';
         }
         return null;
       },

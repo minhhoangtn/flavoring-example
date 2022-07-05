@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flavoring/configuration/environment/env.dart';
-import 'package:flavoring/configuration/style/app_theme.dart';
+
+import 'package:flavoring/core/db_helper/db_helper_barrel.dart';
 import 'package:flavoring/data/data_source/local/local_barrel.dart';
+
 import 'package:flavoring/data/data_source/remote/remote_barrel.dart';
 
 import 'package:flavoring/data/repository/repository_barrel.dart';
@@ -28,32 +30,22 @@ void _registerNetworkComponent() {
 }
 
 void _registerRepository() {
-  getIt.registerFactory<AuthRepository>(
-      () => AuthRepositoryImpl(getIt<AuthService>()));
+  getIt.registerFactory<AuthRepository>(() => AuthRepositoryImpl(getIt()));
 
-  getIt.registerFactory<TaskRepository>(() => TaskRepositoryImpl());
+  getIt.registerFactory<TaskRepository>(() => TaskRepositoryImpl(getIt()));
 }
 
 Future<void> _registerLocalStorage() async {
-  ///SHARED PREFERENCE
-  // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  //
-  // getIt.registerSingleton<SharedPreferences>(sharedPreferences);
-  //
-  // getIt.registerSingleton<SharedPreferenceHelper>(
-  //     SharedPreferenceHelper(getIt<SharedPreferences>()));
   await SharedPreferenceHelper.instance.init();
 
-  ///HIVE
   final directory = await getApplicationDocumentsDirectory();
   await Hive.initFlutter(directory.path);
 
   await HiveHelper.instance.init();
-  //
-  // final userBox = await Hive.openBox<String>('user');
-  // final taskBox = await Hive.openBox<String>('task');
-  // getIt.registerSingleton<HiveHelper>(
-  //     HiveHelper(userDB: userBox, taskDB: taskBox));
+
+  getIt.registerFactory<UserDAO>(() => UserDAOImpl());
+
+  getIt.registerFactory<TaskDAO>(() => TaskDAOImpl());
 }
 
 void _registerAppConfig(AppEnv flavor) {

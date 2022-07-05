@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum SharedPreferenceKey { tokenKey, test }
+enum SharedPreferenceKey { tokenKey }
 
 class SharedPreferenceHelper {
   static SharedPreferenceHelper? _instance;

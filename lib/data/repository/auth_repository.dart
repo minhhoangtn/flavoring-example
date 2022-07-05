@@ -1,7 +1,4 @@
-import 'dart:convert';
-
-import 'package:flavoring/data/data_source/local/hive_helper.dart';
-import 'package:flavoring/data/data_source/remote/auth_service.dart';
+import 'package:flavoring/data/data_source/local/local_barrel.dart';
 import 'package:flavoring/data/model/entity/user/user_entity.dart';
 import 'package:flavoring/data/model/exception/error_exception.dart';
 import 'package:flavoring/data/model/request/auth/login_request.dart';
@@ -16,66 +13,54 @@ abstract class AuthRepository {
 }
 
 class AuthRepositoryImpl implements AuthRepository {
-  AuthService authService;
+  UserDAO userDAO;
 
-  AuthRepositoryImpl(this.authService);
+  AuthRepositoryImpl(this.userDAO);
 
   @override
   Future<void> registerAccount(RegisterRequest param) async {
-    String userId = const Uuid().v1();
-    UserEntity user = UserEntity(
-        id: userId,
-        email: param.email,
-        password: param.password,
-        fullName: param.fullName);
+    try {
+      String userId = const Uuid().v1();
+      UserEntity user = UserEntity(
+          id: userId,
+          email: param.email,
+          password: param.password,
+          fullName: param.fullName);
 
-    final List<String>? userDBData =
-        HiveHelper.instance.getListItem<String>(HiveDB.user);
-    if (userDBData == null) {
-      throw (ErrorException('Dữ liệu DB đang null'));
-    }
+      final userList = userDAO.getAllUser();
 
-    final List<UserEntity> userList =
-        userDBData.map((e) => UserEntity.fromJson(jsonDecode(e))).toList();
+      int userExistResult =
+          userList.indexWhere((element) => element.email == param.email);
+      if (userExistResult != -1) {
+        throw (ErrorException('Email đã có người sử dụng'));
+      }
 
-    int userExistResult =
-        userList.indexWhere((element) => element.email == param.email);
-    print(userList);
-    if (userExistResult != -1) {
-      throw (ErrorException('Email đã có người sử dụng'));
-    }
-
-    final result = await HiveHelper.instance
-        .addItem<String>(HiveDB.user, userId, jsonEncode(user.toJson()));
-
-    if (!result) {
-      throw (ErrorException('Không thể thêm vào DB'));
+      await userDAO.addUser(user);
+    } on ErrorException catch (_) {
+      rethrow;
     }
   }
 
   @override
   Future<UserEntity> login(LoginRequest param) async {
-    await Future.delayed(const Duration(seconds: 2));
-    final List<String>? userDBData =
-        HiveHelper.instance.getListItem<String>(HiveDB.user);
+    try {
+      await Future.delayed(const Duration(seconds: 2));
 
-    if (userDBData == null) {
-      throw (ErrorException(
-          'Dữ liệu DB đang null => Không thể đăng nhập cần dăng kí thêm tk'));
-    }
-    final List<UserEntity> userList =
-        userDBData.map((e) => UserEntity.fromJson(jsonDecode(e))).toList();
+      final userList = userDAO.getAllUser();
 
-    final query =
-        userList.indexWhere((element) => element.email == param.email);
-    if (query == -1) {
-      throw (ErrorException('Email không tồn tại'));
-    }
-    if (userList[query].password != param.password) {
-      throw (ErrorException('Mật khẩu sai'));
-    }
+      final query =
+          userList.indexWhere((element) => element.email == param.email);
+      if (query == -1) {
+        throw (ErrorException('Email không tồn tại'));
+      }
+      if (userList[query].password != param.password) {
+        throw (ErrorException('Mật khẩu sai'));
+      }
 
-    return userList[query];
+      return userList[query];
+    } on ErrorException catch (_) {
+      rethrow;
+    }
   }
 
   @override
@@ -83,13 +68,10 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   UserEntity autoLogin(String token) {
-    final List<String> userDBData =
-        HiveHelper.instance.getListItem<String>(HiveDB.user)!;
-
-    final List<UserEntity> userList =
-        userDBData.map((e) => UserEntity.fromJson(jsonDecode(e))).toList();
-
-    final user = userList.firstWhere((element) => element.id == token);
-    return user;
+    try {
+      return userDAO.getUser(token);
+    } on ErrorException catch (_) {
+      rethrow;
+    }
   }
 }

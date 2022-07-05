@@ -2,7 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flavoring/data/model/entity/task/task_entity.dart';
 import 'package:flavoring/data/repository/repository_barrel.dart';
-import 'package:flavoring/core/core.dart';
+import 'package:flavoring/core/extension/extension_barrel.dart';
+import 'package:flavoring/utils/push_notification.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 part 'task_detail_state.dart';
 
@@ -15,7 +18,33 @@ class TaskDetailCubit extends Cubit<TaskDetailState> {
   }
 
   Future<bool> updateTask() async {
-    return await repository.updateTask(state.newState!);
+    final currentState = state.newState!;
+    final isReceiveNotification = currentState.isReceiveNotification;
+
+    bool result = await repository.updateTask(currentState);
+    if (result) {
+      if (isReceiveNotification) {
+        await localNotificationsPlugin.cancel(currentState.id.hashCode);
+        final androidChannel = androidCustomChannel;
+        await localNotificationsPlugin.zonedSchedule(
+            currentState.id.hashCode,
+            currentState.title,
+            currentState.note,
+            tz.TZDateTime.fromMillisecondsSinceEpoch(
+                tz.getLocation('Etc/GMT+8'), currentState.deadline),
+            NotificationDetails(
+                android: AndroidNotificationDetails(
+                    androidChannel.id, androidChannel.name,
+                    channelDescription: androidChannel.description)),
+            payload: currentState.id,
+            androidAllowWhileIdle: true,
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.absoluteTime);
+      } else {
+        await localNotificationsPlugin.cancel(currentState.id.hashCode);
+      }
+    }
+    return result;
   }
 
   bool checkIfStatusChange() {
@@ -23,6 +52,14 @@ class TaskDetailCubit extends Cubit<TaskDetailState> {
       return false;
     }
     return true;
+  }
+
+  void changeReceiveNotification() {
+    final currentStatus = state.newState!;
+
+    emit(state.copyWith(
+        newState: currentStatus.copyWith(
+            isReceiveNotification: !currentStatus.isReceiveNotification)));
   }
 
   void changeTitle(String title) {
@@ -41,7 +78,7 @@ class TaskDetailCubit extends Cubit<TaskDetailState> {
     emit(state.copyWith(newState: newState));
   }
 
-  void changeIsDoneStatus(String taskId) async {
+  void changeIsDoneStatus() async {
     final newState = state.newState!.copyWithNewStatus();
     emit(state.copyWith(newState: newState));
   }

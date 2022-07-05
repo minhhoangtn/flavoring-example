@@ -1,7 +1,7 @@
 import 'package:flavoring/configuration/style/style_barrel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flavoring/core/core.dart';
+import 'package:flavoring/core/extension/extension_barrel.dart';
 
 import 'widget_text_field.dart';
 

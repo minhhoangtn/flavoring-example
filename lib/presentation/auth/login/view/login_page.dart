@@ -1,8 +1,8 @@
 import 'package:flavoring/configuration/routing/app_router.dart';
 import 'package:flavoring/configuration/style/style_barrel.dart';
 import 'package:flavoring/presentation/auth/bloc/auth_bloc.dart';
-import 'package:flavoring/utils/keyboard_utils.dart';
-import 'package:flavoring/utils/validator_utils.dart';
+import 'package:flavoring/core/utils/keyboard_utils.dart';
+import 'package:flavoring/core/utils/validator_utils.dart';
 
 import 'package:flavoring/presentation/common/common_barrel.dart';
 import 'package:flutter/gestures.dart';

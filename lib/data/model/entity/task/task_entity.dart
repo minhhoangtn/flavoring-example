@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'task_entity.g.dart';
 
 @JsonSerializable()
-class TaskEntity {
+class TaskEntity extends Equatable {
   final String id;
   final String userId;
   final String title;

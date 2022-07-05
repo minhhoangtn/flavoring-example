@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flavoring/core/db_helper/hive_helper.dart';
 import 'package:flavoring/data/data_source/local/local_barrel.dart';
 import 'package:flavoring/data/model/entity/task/task_entity.dart';
 import 'package:flavoring/data/model/exception/error_exception.dart';
@@ -12,12 +13,15 @@ abstract class TaskRepository {
   Future<bool> updateTask(TaskEntity task);
 
   Future<List<TaskEntity>> fetchListTask(String userId);
+
   Future<bool> deleteTask(String taskId);
+
   Future<bool> changeStatus(String taskId);
 }
 
 class TaskRepositoryImpl implements TaskRepository {
-  TaskRepositoryImpl();
+  TaskDAO taskDAO;
+  TaskRepositoryImpl(this.taskDAO);
 
   @override
   Future<TaskEntity> addTask(AddTaskRequest param, String userId) async {

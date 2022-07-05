@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flavoring/core/session/app_session.dart';
 import 'package:flavoring/data/model/entity/user/user_entity.dart';
 import 'package:flavoring/data/repository/auth_repository.dart';
-import 'package:flavoring/utils/session/app_session.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
