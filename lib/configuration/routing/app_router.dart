@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 class RouteDefine {
   static String root = '/';
 
-  static String home = '/home';
+  static String home = 'home';
 
   ///Auth
-  static String login = '/login';
-  static String register = '/register';
+  static String login = 'login';
+  static String register = 'register';
 
   ///Task
-  static String taskDetail = '/taskDetail';
+  static String taskDetail = 'taskDetail';
 }
 
 class AppRoute {

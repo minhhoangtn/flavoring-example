@@ -1,17 +1,19 @@
+import 'package:flavoring/configuration/routing/app_navigator.dart';
+import 'package:flavoring/configuration/routing/app_router.dart';
 import 'package:flavoring/configuration/style/app_theme.dart';
 import 'package:flavoring/data/repository/auth_repository.dart';
 
 import 'package:flavoring/utils/di/injection.dart';
 import 'package:flavoring/utils/keyboard_utils.dart';
-import 'package:flavoring/utils/routing/app_navigator.dart';
-import 'package:flavoring/utils/routing/app_router.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'auth/bloc/auth_bloc.dart';
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String initialRoute;
+  const MyApp({Key? key, required this.initialRoute}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -44,6 +46,7 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: AppNavigator.rootKey,
         theme: appTheme.themeData,
         onGenerateRoute: AppRoute.generateRoute,
+        initialRoute: widget.initialRoute,
         builder: (context, child) {
           return BlocListener<AuthBloc, AuthState>(
               listener: (context, state) {

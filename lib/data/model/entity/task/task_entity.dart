@@ -10,6 +10,7 @@ class TaskEntity {
   final String note;
   final int deadline;
   final bool isDone;
+  final bool isReceiveNotification;
   final int createdAt;
 
   factory TaskEntity.fromJson(Map<String, dynamic> json) =>
@@ -19,18 +20,18 @@ class TaskEntity {
 
   @override
   String toString() {
-    return 'TaskEntity{id: $id, userId: $userId, title: $title, note: $note, deadline: $deadline,createdAt: $createdAt, isDone: $isDone}';
+    return 'TaskEntity{id: $id, userId: $userId, title: $title, note: $note, deadline: $deadline,createdAt: $createdAt, isDone: $isDone, isReceiveNotification: $isReceiveNotification}';
   }
 
-  const TaskEntity({
-    required this.id,
-    required this.userId,
-    required this.title,
-    required this.note,
-    required this.deadline,
-    required this.createdAt,
-    this.isDone = false,
-  });
+  const TaskEntity(
+      {required this.id,
+      required this.userId,
+      required this.title,
+      required this.note,
+      required this.deadline,
+      required this.createdAt,
+      this.isDone = false,
+      this.isReceiveNotification = false});
 
   TaskEntity copyWithNewStatus() {
     return TaskEntity(
@@ -52,6 +53,7 @@ class TaskEntity {
         note,
         deadline,
         isDone,
+        isReceiveNotification,
         createdAt,
       ];
 
@@ -62,6 +64,7 @@ class TaskEntity {
     String? note,
     int? deadline,
     bool? isDone,
+    bool? isReceiveNotification,
     int? createdAt,
   }) {
     return TaskEntity(
@@ -71,6 +74,8 @@ class TaskEntity {
       note: note ?? this.note,
       deadline: deadline ?? this.deadline,
       isDone: isDone ?? this.isDone,
+      isReceiveNotification:
+          isReceiveNotification ?? this.isReceiveNotification,
       createdAt: createdAt ?? this.createdAt,
     );
   }

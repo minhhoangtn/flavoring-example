@@ -1,20 +1,20 @@
+import 'package:flavoring/configuration/routing/app_router.dart';
 import 'package:flavoring/configuration/style/style_barrel.dart';
 import 'package:flavoring/core/core.dart';
 import 'package:flavoring/data/model/entity/task/task_entity.dart';
 import 'package:flavoring/presentation/common/common_barrel.dart';
 
-import 'package:flavoring/utils/routing/app_router.dart';
 import 'package:flutter/material.dart';
 
 class WidgetTaskItem extends StatelessWidget {
   final TaskEntity item;
-  final VoidCallback onPressed;
+  final VoidCallback onDeletedConfirm;
   final VoidCallback onChangeStatus;
   final VoidCallback onItemChanged;
   const WidgetTaskItem(
       {Key? key,
       required this.item,
-      required this.onPressed,
+      required this.onDeletedConfirm,
       required this.onItemChanged,
       required this.onChangeStatus})
       : super(key: key);
@@ -29,7 +29,7 @@ class WidgetTaskItem extends StatelessWidget {
         final isDismiss = await _showConfirmDialog(context);
         return isDismiss;
       },
-      onDismissed: (direction) => onPressed.call(),
+      onDismissed: (direction) => onDeletedConfirm.call(),
       child: InkWell(
         onTap: () async {
           final isItemUpdated = await Navigator.of(context)

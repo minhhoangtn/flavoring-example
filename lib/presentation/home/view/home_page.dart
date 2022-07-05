@@ -1,8 +1,10 @@
 import 'package:flavoring/data/model/entity/user/user_entity.dart';
 import 'package:flavoring/presentation/auth/bloc/auth_bloc.dart';
 import 'package:flavoring/presentation/home/bloc/home_cubit.dart';
+import 'package:flavoring/utils/push_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'widget/widget_barrel.dart';
 
@@ -61,7 +63,8 @@ class _HomePageState extends State<HomePage> {
                                 final task = state.tasks[index];
                                 return WidgetTaskItem(
                                   item: task,
-                                  onPressed: () => cubit.deleteTask(task.id),
+                                  onDeletedConfirm: () =>
+                                      cubit.deleteTask(task.id),
                                   onChangeStatus: () =>
                                       cubit.changeTaskStatus(task.id),
                                   onItemChanged: () => cubit.fetchList(user.id),

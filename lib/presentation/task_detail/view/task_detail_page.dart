@@ -83,11 +83,17 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                   );
                 },
               ),
-              WidgetSwitch(
-                title: 'Nhận thông báo',
-                value: false,
-                onTap: () {},
-              )
+              BlocBuilder<TaskDetailCubit, TaskDetailState>(
+                buildWhen: (previous, current) =>
+                    previous.newState != current.newState,
+                builder: (context, state) {
+                  return WidgetSwitch(
+                    title: 'Nhận thông báo',
+                    value: state.newState!.isReceiveNotification,
+                    onTap: () {},
+                  );
+                },
+              ),
             ],
           ),
         ),
