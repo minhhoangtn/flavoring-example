@@ -6,15 +6,20 @@ import 'package:flavoring/utils/di/injection.dart';
 import 'package:flavoring/utils/push_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
 
+  ///Firebase
+  await Firebase.initializeApp();
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+  ///Injection
   await setupInjection(AppEnv.dev);
 
+  ///Local notification
   tz.initializeTimeZones();
   await setupPushNotification();
   final notificationAppLaunchDetails =
