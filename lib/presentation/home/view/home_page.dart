@@ -43,34 +43,32 @@ class _HomePageState extends State<HomePage> {
                         ? const Center(
                             child: Text('Bạn đang không có task nào'),
                           )
-                        : ListView.separated(
-                            reverse: true,
-                            separatorBuilder: (_, index) =>
-                                const SizedBox(height: 10),
-                            itemBuilder: (context, index) {
-                              if (index == state.tasks.length) {
-                                return Builder(builder: (context) {
-                                  final undoneTasks = state.tasks
-                                      .where((element) => !element.isDone)
-                                      .toList();
-                                  return WidgetHeader(
-                                    username: user.fullName,
-                                    undoneTaskCount: undoneTasks.length,
-                                  );
-                                });
-                              } else {
-                                final task = state.tasks[index];
-                                return WidgetTaskItem(
-                                  item: task,
-                                  onDeletedConfirm: () =>
-                                      cubit.deleteTask(task.id),
-                                  onChangeStatus: () =>
-                                      cubit.changeTaskStatus(task.id),
-                                  onItemChanged: () => cubit.fetchList(user.id),
-                                );
-                              }
-                            },
-                            itemCount: state.tasks.length + 1,
+                        : Column(
+                            children: [
+                              WidgetHeader(
+                                username: user.fullName,
+                                undoneTaskCount: state.undoneTaskCount,
+                              ),
+                              Expanded(
+                                child: ListView.separated(
+                                  separatorBuilder: (_, index) =>
+                                      const SizedBox(height: 10),
+                                  itemBuilder: (context, index) {
+                                    final task = state.filteredTasks[index];
+                                    return WidgetTaskItem(
+                                      item: task,
+                                      onDeletedConfirm: () =>
+                                          cubit.deleteTask(task.id),
+                                      onChangeStatus: () =>
+                                          cubit.changeTaskStatus(task.id),
+                                      onItemChanged: () =>
+                                          cubit.fetchList(user.id),
+                                    );
+                                  },
+                                  itemCount: state.filteredTasks.length,
+                                ),
+                              ),
+                            ],
                           );
                   case ListStatus.loading:
                     return const Center(child: CircularProgressIndicator());

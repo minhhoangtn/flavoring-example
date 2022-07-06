@@ -13,10 +13,20 @@ class HomeCubit extends Cubit<HomeState> {
 
   HomeCubit(this.repository) : super(const HomeState.loading());
 
+  void sortTaskByDate(List<TaskEntity> tasks) {
+    tasks.sort((a, b) => a.deadline.compareTo(b.deadline));
+  }
+
+  void filterTasks(FilterStatus filter) {
+    print('filter');
+    emit(HomeState.filter(state.tasks, filter));
+  }
+
   Future<void> fetchList(String userId) async {
     emit(const HomeState.loading());
     try {
       final tasks = await repository.fetchListTask(userId);
+      sortTaskByDate(tasks);
       emit(HomeState.success(tasks));
     } on ErrorException catch (_) {
       emit(const HomeState.failure());
@@ -32,6 +42,7 @@ class HomeCubit extends Cubit<HomeState> {
       final task = await repository.addTask(param, userId);
       final tasks = state.tasks.map((e) => e).toList();
       tasks.add(task);
+      sortTaskByDate(tasks);
       emit(HomeState.success(tasks));
     } on ErrorException catch (e) {
       print(e.errorMessage);

@@ -1,6 +1,6 @@
-import 'package:flavoring/configuration/routing/app_navigator.dart';
-import 'package:flavoring/configuration/routing/app_router.dart';
 import 'package:flavoring/configuration/style/app_theme.dart';
+import 'package:flavoring/core/routing/app_navigator.dart';
+import 'package:flavoring/core/routing/app_router.dart';
 import 'package:flavoring/data/repository/auth_repository.dart';
 
 import 'package:flavoring/utils/di/injection.dart';
