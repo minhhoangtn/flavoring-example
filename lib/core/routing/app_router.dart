@@ -22,6 +22,8 @@ class AppRoute {
   static MaterialPageRoute generateRoute(RouteSettings settings) {
     final routes = <String, WidgetBuilder>{
       RouteDefine.root: (_) => SplashRoute.route,
+
+      ///Home
       RouteDefine.home: (_) => HomeRoute.route,
 
       ///Auth

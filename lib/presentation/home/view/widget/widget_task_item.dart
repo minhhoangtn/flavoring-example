@@ -58,16 +58,32 @@ class WidgetTaskItem extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  Text(
-                    item.title,
-                    style: AppTextStyle.black(18),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          item.title,
+                          style: AppTextStyle.black(18),
+                        ),
+                      ),
+                      if (item.isReceiveNotification)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Icon(
+                            Icons.notifications,
+                            color: AppColor.orangeE6,
+                          ),
+                        )
+                    ],
                   ),
                   const SizedBox(height: 5),
                   RichText(
                       text: TextSpan(children: [
                     TextSpan(text: 'Deadline: ', style: AppTextStyle.grey(16)),
                     TextSpan(
-                        text: item.deadline.fromEpoch().toDisplayString(),
+                        text: item.deadline.fromEpoch().isBefore(DateTime.now())
+                            ? "Quá hạn"
+                            : item.deadline.fromEpoch().toDisplayString(),
                         style: AppTextStyle.orange(16))
                   ])),
                   Container(

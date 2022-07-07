@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flavoring/data/model/entity/task/task_entity.dart';
 import 'package:flavoring/data/repository/repository_barrel.dart';
 import 'package:flavoring/core/extension/extension_barrel.dart';
-import 'package:flavoring/utils/push_notification.dart';
+import 'package:flavoring/core/notification_handler.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 

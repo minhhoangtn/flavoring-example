@@ -4,7 +4,7 @@ import 'package:flavoring/data/model/entity/task/task_entity.dart';
 import 'package:flavoring/data/model/exception/error_exception.dart';
 import 'package:flavoring/data/model/request/task/add_task_request.dart';
 import 'package:flavoring/data/repository/repository_barrel.dart';
-import 'package:flavoring/utils/push_notification.dart';
+import 'package:flavoring/core/notification_handler.dart';
 
 part 'home_state.dart';
 

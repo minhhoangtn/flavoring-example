@@ -1,9 +1,10 @@
 import 'package:flavoring/configuration/style/app_theme.dart';
+import 'package:flavoring/core/notification_handler.dart';
 import 'package:flavoring/core/routing/app_navigator.dart';
 import 'package:flavoring/core/routing/app_router.dart';
 import 'package:flavoring/data/repository/auth_repository.dart';
 
-import 'package:flavoring/utils/di/injection.dart';
+import 'package:flavoring/core/injection.dart';
 import 'package:flavoring/core/utils/keyboard_utils.dart';
 
 import 'package:flutter/material.dart';
@@ -49,11 +50,12 @@ class _MyAppState extends State<MyApp> {
         initialRoute: widget.initialRoute,
         builder: (context, child) {
           return BlocListener<AuthBloc, AuthState>(
-              listener: (context, state) {
+              listener: (context, state) async {
                 if (state is Unauthenticated) {
                   AppNavigator.currentState!.pushNamedAndRemoveUntil(
                       RouteDefine.login, (route) => false);
                 } else if (state is Authenticated) {
+                  await setupLocalNotification(onTapNotification: (payload) {});
                   AppNavigator.currentState!.pushNamedAndRemoveUntil(
                       RouteDefine.home, (route) => false);
                 }
