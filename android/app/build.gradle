@@ -25,9 +25,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion flutter.compileSdkVersion
+
+    lintOptions {
+        checkReleaseBuilds false
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -59,6 +64,9 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+
+
     flavorDimensions "default"
     productFlavors{
         prod{
@@ -67,6 +75,8 @@ android {
             targetSdkVersion flutter.targetSdkVersion
             versionCode flutterVersionCode.toInteger()
             versionName flutterVersionName
+//            applicationIdSuffix ".prod"
+//            versionNameSuffix "-prod"
             resValue "string", "app_name", "Flavoring PROD"
         }
         dev{
@@ -87,7 +97,9 @@ flutter {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:29.3.1')
+    implementation platform('com.google.firebase:firebase-bom:30.2.0')
+
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

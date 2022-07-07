@@ -1,60 +1,105 @@
-import 'package:flavoring/presentation/home/home_page.dart';
-import 'package:flutter/material.dart';
+import 'package:flavoring/configuration/style/app_theme.dart';
+import 'package:flavoring/core/notification_handler.dart';
+import 'package:flavoring/core/routing/app_navigator.dart';
+import 'package:flavoring/core/routing/app_router.dart';
+import 'package:flavoring/data/repository/auth_repository.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+import 'package:flavoring/core/injection.dart';
+import 'package:flavoring/core/utils/keyboard_utils.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'auth/bloc/auth_bloc.dart';
+
+class MyApp extends StatefulWidget {
+  final String initialRoute;
+  const MyApp({Key? key, required this.initialRoute}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  // AppTheme appTheme = getIt<AppTheme>();
+  AppTheme appTheme = AppTheme(CustomTheme.light);
+  @override
+  void initState() {
+    super.initState();
+    appTheme.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    appTheme.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return BlocProvider(
+      create: (context) => AuthBloc(getIt<AuthRepository>()),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        navigatorKey: AppNavigator.rootKey,
+        theme: appTheme.themeData,
+        onGenerateRoute: AppRoute.generateRoute,
+        initialRoute: widget.initialRoute,
+        builder: (context, child) {
+          return BlocListener<AuthBloc, AuthState>(
+              listener: (context, state) async {
+                if (state is Unauthenticated) {
+                  AppNavigator.currentState!.pushNamedAndRemoveUntil(
+                      RouteDefine.login, (route) => false);
+                } else if (state is Authenticated) {
+                  await setupLocalNotification(onTapNotification: (payload) {});
+                  AppNavigator.currentState!.pushNamedAndRemoveUntil(
+                      RouteDefine.home, (route) => false);
+                }
+              },
+              child: GestureDetector(
+                  onTap: () => KeyboardUtils.dismiss(), child: child!));
+        },
       ),
-
-      // home: Navigator(
-      //   onPopPage: (Route<dynamic> route, dynamic result) =>
-      //       route.didPop(result),
-      //   pages: [
-      //     MaterialPage(
-      //         child: Scaffold(
-      //       body: Container(
-      //         height: 200,
-      //         width: 200,
-      //         color: Colors.red,
-      //       ),
-      //     ))
-      //   ],
-      // ),
-      onGenerateRoute: (RouteSettings settings) {
-        if (settings.name == '/') {
-          return MaterialPageRoute(
-              settings: settings,
-              builder: (context) {
-                return const MyHomePage(title: 'Flutter Demo Home Page');
-              });
-        }
-
-        ///Testing for Android applink
-        var uri = Uri.parse(settings.name!);
-        if (uri.pathSegments.length == 2 && uri.pathSegments[0] == 'testing') {
-          final String param = uri.pathSegments[1];
-          return MaterialPageRoute(
-              settings: settings,
-              builder: (context) {
-                return Scaffold(
-                  body: Center(
-                    child: Text('Success with param: $param'),
-                  ),
-                );
-              });
-        }
-        return MaterialPageRoute(
-            settings: settings,
-            builder: (context) {
-              return const MyHomePage(title: 'Flutter Demo Home Page');
-            });
-      },
     );
   }
 }
+
+//
+// onGenerateRoute: (RouteSettings settings) {
+// Widget? page;
+// switch (settings.name) {
+// case '/':
+// page = const SplashPage();
+// break;
+// case '/home':
+// page = const HomePage();
+// break;
+// case '/notification':
+// page = const MyHomePage(title: 'demo');
+// break;
+// case '/login':
+// page = const LoginPage();
+// break;
+// }
+//
+// ///Testing for Android Deeplink
+// if (settings.name == '/testing?id=10') {
+// page = Scaffold(
+// body: Center(
+// child: Text(
+// 'Success with param: 10 uri: and setting.name${settings.name}'),
+// ));
+// }
+// return MaterialPageRoute(
+// settings: settings,
+// builder: (context) {
+// return page ??
+// HomePage(
+// route: settings.name ?? "no route",
+// );
+// });
+// },
