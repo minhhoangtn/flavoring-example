@@ -1,13 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:flavoring/configuration/environment/env.dart';
-
 import 'package:flavoring/core/db_helper/db_helper_barrel.dart';
 import 'package:flavoring/data/data_source/local/local_barrel.dart';
-
 import 'package:flavoring/data/data_source/remote/remote_barrel.dart';
-
 import 'package:flavoring/data/repository/repository_barrel.dart';
 
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
