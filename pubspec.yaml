@@ -56,6 +56,10 @@ dependencies:
   # Dependency Inversion
   get_it: ^7.2.0
 
+  # Unit test
+  mocktail: ^0.3.0
+  bloc_test: ^9.0.3
+
   # Multi-language
   intl: ^0.17.0
 
