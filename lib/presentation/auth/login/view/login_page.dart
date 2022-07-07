@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                               .read<AuthBloc>()
                               .add(LoggedIn(userInfo: state.userInfo));
                         } else if (state is LoginFailure) {
-                          print(state.errorMessage);
+                          WidgetSnackBar.showError(message: state.errorMessage);
                         }
                       },
                       builder: (context, state) {
@@ -114,8 +114,15 @@ class _LoginPageState extends State<LoginPage> {
                           text: 'Đăng ký ngay',
                           style: AppTextStyle.orange(14),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => Navigator.of(context)
-                                .pushNamed(RouteDefine.register))
+                            ..onTap = () async {
+                              final isRegisterSuccess =
+                                  await Navigator.of(context)
+                                      .pushNamed(RouteDefine.register);
+                              if (isRegisterSuccess == true) {
+                                WidgetSnackBar.showSuccess(
+                                    'Đăng kí thành công');
+                              }
+                            })
                     ])),
                     const SizedBox(height: 10),
                   ],

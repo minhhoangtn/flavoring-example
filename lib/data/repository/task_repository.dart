@@ -85,7 +85,7 @@ class TaskRepositoryImpl implements TaskRepository {
       await taskDAO.updateTask(task, taskId);
 
       return true;
-    } on ErrorException catch (e) {
+    } on ErrorException catch (_) {
       return false;
     }
   }

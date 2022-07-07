@@ -18,7 +18,6 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void filterTasks(FilterStatus filter) {
-    print('filter');
     emit(HomeState.filter(state.tasks, filter));
   }
 
@@ -44,9 +43,7 @@ class HomeCubit extends Cubit<HomeState> {
       tasks.add(task);
       sortTaskByDate(tasks);
       emit(HomeState.success(tasks));
-    } on ErrorException catch (e) {
-      print(e.errorMessage);
-    }
+    } on ErrorException catch (_) {}
   }
 
   Future<void> deleteTask(String taskId) async {

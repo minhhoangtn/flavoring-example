@@ -99,7 +99,6 @@ class WidgetTaskItem extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 
   _buildDismissBackground() {

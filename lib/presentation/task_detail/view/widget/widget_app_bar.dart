@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WidgetAppBar extends AppBar {
   final BuildContext context;
+
   WidgetAppBar({Key? key, required this.context})
       : super(
           key: key,
@@ -43,20 +44,48 @@ class WidgetAppBar extends AppBar {
               child: GestureDetector(
                 onTap: () async {
                   if (!context.read<TaskDetailCubit>().checkIfStatusChange()) {
+                    Navigator.of(context).pop();
                     return;
                   }
-                  final result =
-                      await context.read<TaskDetailCubit>().updateTask();
-                  if (result) {
-                    print('update');
-                    Navigator.of(context).pop(true);
-                  } else {
-                    print('can not update');
-                  }
+                  context.read<TaskDetailCubit>().updateTask();
                 },
-                child: Text(
-                  'Chấp thuận',
-                  style: AppTextStyle.orange(14, weight: FontWeight.w500),
+                child: BlocConsumer<TaskDetailCubit, TaskDetailState>(
+                  listenWhen: (previous, current) =>
+                      previous.updateStatus != current.updateStatus,
+                  listener: (context, state) {
+                    if (state.updateStatus == UpdateTaskStatus.success) {
+                      Navigator.of(context).pop(true);
+                      return;
+                    }
+                    if (state.updateStatus == UpdateTaskStatus.failure) {
+                      WidgetSnackBar.showError(message: state.errorMessage);
+                      return;
+                    }
+                  },
+                  buildWhen: (previous, current) =>
+                      previous.updateStatus != current.updateStatus,
+                  builder: (context, state) {
+                    return Row(
+                      children: [
+                        Text(
+                          'Cập nhật',
+                          style:
+                              AppTextStyle.orange(14, weight: FontWeight.w500),
+                        ),
+                        if (state.updateStatus == UpdateTaskStatus.loading)
+                          const Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: SizedBox(
+                              height: 15,
+                              width: 15,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            ),
+                          )
+                      ],
+                    );
+                  },
                 ),
               ),
             ),

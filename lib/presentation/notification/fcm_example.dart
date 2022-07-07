@@ -1,10 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
 import 'package:flavoring/core/notification_handler.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -12,7 +9,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
 
-  print("Handling a background message: ${message.messageId}");
+  // print("Handling a background message: ${message.messageId}");
 }
 
 class MyHomePage extends StatefulWidget {
@@ -25,28 +22,26 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static const methodChannel = MethodChannel('com.flavoring/test');
+  // static const methodChannel = MethodChannel('com.flavoring/test');
   late final String? fcmToken;
   String? _fcmTitle;
   String? _fcmBody;
 
   Future<void> getLocationDescription() async {
-    String description = "";
-    try {
-      description = await methodChannel.invokeMethod('getMyLocation', 'hello');
-    } on PlatformException catch (e) {
-      description = "failed due to $e";
-    }
-
-    print(description);
+    // String description = "";
+    // try {
+    //   description = await methodChannel.invokeMethod('getMyLocation', 'hello');
+    // } on PlatformException catch (e) {
+    //   description = "failed due to $e";
+    // }
   }
 
   Future<void> configureCloudMessagingNotification() async {
     /// Only need for IOS
-    final NotificationSettings userPermission =
-        await FirebaseMessaging.instance.requestPermission();
-    print(
-        'User notification permission: ${userPermission.authorizationStatus}');
+    // final NotificationSettings userPermission =
+    //     await FirebaseMessaging.instance.requestPermission();
+    // print(
+    //     'User notification permission: ${userPermission.authorizationStatus}');
 
     /// Configure for Android high priority Notification Channel
     await localNotificationsPlugin
@@ -57,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
     fcmListenHandler();
 
     fcmToken = await FirebaseMessaging.instance.getToken();
-    print('FCM Token: $fcmToken');
+    // print('FCM Token: $fcmToken');
   }
 
   void fcmListenHandler() {
@@ -78,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     FirebaseMessaging.instance.onTokenRefresh.listen((String newToken) {
       fcmToken = newToken;
-      print('New FCM Token: $fcmToken');
+      // print('New FCM Token: $fcmToken');
     });
   }
 

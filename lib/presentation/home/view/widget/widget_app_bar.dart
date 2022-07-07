@@ -31,38 +31,14 @@ class WidgetAppBar extends AppBar {
                     },
                     itemBuilder: (BuildContext context) =>
                         <PopupMenuEntry<FilterStatus>>[
-                          PopupMenuItem<FilterStatus>(
-                            value: FilterStatus.byDone,
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: Checkbox(
-                                        value:
-                                            state.filter == FilterStatus.byDone,
-                                        onChanged: (value) {})),
-                                const SizedBox(width: 10),
-                                const Text('Lọc theo đã hoàn thành')
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem<FilterStatus>(
-                            value: FilterStatus.byUndone,
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: Checkbox(
-                                        value: state.filter ==
-                                            FilterStatus.byUndone,
-                                        onChanged: (value) {})),
-                                const SizedBox(width: 10),
-                                const Text('Lọc theo chưa hoàn thành')
-                              ],
-                            ),
-                          ),
+                          _buildFilterOption(FilterStatus.byDone,
+                              isSelected: state.filter == FilterStatus.byDone),
+                          _buildFilterOption(FilterStatus.byUndone,
+                              isSelected:
+                                  state.filter == FilterStatus.byUndone),
+                          _buildFilterOption(FilterStatus.byDueDate,
+                              isSelected:
+                                  state.filter == FilterStatus.byDueDate),
                         ]);
               },
             ),
@@ -82,6 +58,22 @@ class WidgetAppBar extends AppBar {
             )
           ],
         );
+
+  static _buildFilterOption(FilterStatus value, {required bool isSelected}) {
+    return PopupMenuItem<FilterStatus>(
+      value: value,
+      child: Row(
+        children: [
+          SizedBox(
+              height: 20,
+              width: 20,
+              child: Checkbox(value: isSelected, onChanged: (value) {})),
+          const SizedBox(width: 10),
+          Text('Lọc theo ${value.name}')
+        ],
+      ),
+    );
+  }
 
   static Row _buildTitle() {
     return Row(

@@ -15,7 +15,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         RegisterRequest(email: email, password: password, fullName: fullName);
     emit(RegisterLoading());
     try {
-      final result = await authRepository.registerAccount(param);
+      await authRepository.registerAccount(param);
       emit(RegisterSuccess());
     } on ErrorException catch (e) {
       emit(RegisterFailure(e.errorMessage));

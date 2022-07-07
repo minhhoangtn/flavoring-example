@@ -11,13 +11,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthRepository authRepository;
   AuthBloc(this.authRepository) : super(const Uninitialized()) {
     on<AppStarted>((event, emit) async {
-      print('app started');
       final token = AppSession.accessToken;
       if (token == null) {
-        print('need login');
         emit(const Unauthenticated());
       } else {
-        print('go home');
         final userInfo = authRepository.autoLogin(token);
         emit(Authenticated(userInfo: userInfo));
       }

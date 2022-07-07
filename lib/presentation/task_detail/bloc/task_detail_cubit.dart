@@ -17,15 +17,15 @@ class TaskDetailCubit extends Cubit<TaskDetailState> {
     emit(state.copyWith(initialState: task, newState: task));
   }
 
-  Future<bool> updateTask() async {
+  void updateTask() async {
+    emit(state.copyWith(updateStatus: UpdateTaskStatus.loading));
     final currentState = state.newState!;
     final isReceiveNotification = currentState.isReceiveNotification;
 
-    bool result = await repository.updateTask(currentState);
-    if (result) {
-      if (isReceiveNotification) {
-        await localNotificationsPlugin.cancel(currentState.id.hashCode);
-        final androidChannel = androidLocalChannel;
+    if (isReceiveNotification) {
+      await localNotificationsPlugin.cancel(currentState.id.hashCode);
+      final androidChannel = androidLocalChannel;
+      try {
         await localNotificationsPlugin.zonedSchedule(
             currentState.id.hashCode,
             currentState.title,
@@ -41,11 +41,28 @@ class TaskDetailCubit extends Cubit<TaskDetailState> {
             androidAllowWhileIdle: true,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.absoluteTime);
-      } else {
-        await localNotificationsPlugin.cancel(currentState.id.hashCode);
+      } catch (_) {
+        emit(state.copyWith(
+            newState: currentState.copyWith(
+                isReceiveNotification: !currentState.isReceiveNotification),
+            updateStatus: UpdateTaskStatus.failure,
+            errorMessage: 'Có lỗi xảy ra với notification'));
+        return;
       }
+    } else {
+      await localNotificationsPlugin.cancel(currentState.id.hashCode);
     }
-    return result;
+
+    bool isSuccess = await repository.updateTask(currentState);
+    if (!isSuccess) {
+      await localNotificationsPlugin.cancel(currentState.id.hashCode);
+      emit(state.copyWith(
+          updateStatus: UpdateTaskStatus.failure,
+          errorMessage: 'Không thể cập nhật'));
+      return;
+    }
+
+    emit(state.copyWith(updateStatus: UpdateTaskStatus.success));
   }
 
   bool checkIfStatusChange() {

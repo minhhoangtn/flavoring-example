@@ -94,9 +94,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     BlocConsumer<RegisterCubit, RegisterState>(
                       listener: (context, state) {
                         if (state is RegisterSuccess) {
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pop(true);
                         } else if (state is RegisterFailure) {
-                          print(state.errorMessage);
+                          WidgetSnackBar.showError(message: state.errorMessage);
                         }
                       },
                       builder: (context, state) {

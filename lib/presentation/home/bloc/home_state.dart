@@ -11,11 +11,29 @@ extension FilterStatusExtension on FilterStatus {
         return tasks.where((element) => element.isDone).toList();
       case FilterStatus.byUndone:
         return tasks.where((element) => !element.isDone).toList();
+      case FilterStatus.byDueDate:
+        return tasks
+            .where((element) =>
+                element.deadline < DateTime.now().millisecondsSinceEpoch)
+            .toList();
+    }
+  }
+
+  String get name {
+    switch (this) {
+      case FilterStatus.all:
+        return 'tất cả';
+      case FilterStatus.byDone:
+        return 'đã hoàn thành';
+      case FilterStatus.byUndone:
+        return 'chưa hoàn thành';
+      case FilterStatus.byDueDate:
+        return 'đã quá hạn';
     }
   }
 }
 
-enum FilterStatus { all, byDone, byUndone }
+enum FilterStatus { all, byDone, byUndone, byDueDate }
 
 class HomeState extends Equatable {
   const HomeState.loading() : this._();

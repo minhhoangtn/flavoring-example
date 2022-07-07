@@ -111,7 +111,8 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
 
   _buildDeadlineField() {
     return WidgetDatePicker(
-      minimumDate: DateTime.now(),
+      minimumDate: DateTime.now().add(const Duration(minutes: 1)),
+      initialDate: DateTime.now().add(const Duration(minutes: 1)),
       hintText: 'Hạn chót',
       controller: deadlineController,
       pickerMode: CupertinoDatePickerMode.dateAndTime,

@@ -18,9 +18,7 @@ Future<void> setupLocalNotification(
 }
 
 void onDidReceiveLocalNotification(
-    int id, String? title, String? body, String? payload) async {
-  print('$id title: $title, body: $body, payload $payload');
-}
+    int id, String? title, String? body, String? payload) async {}
 
 AndroidNotificationChannel androidFCMChannel = const AndroidNotificationChannel(
     'notification_channel_testId', 'notification_channel_testName',
