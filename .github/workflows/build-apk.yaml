@@ -1,4 +1,4 @@
-name: Build Apk for DEV flavor
+name: Build Apk
 
 on:
   pull_request:
