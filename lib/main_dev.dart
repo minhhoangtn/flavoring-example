@@ -11,6 +11,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 
 //sdád  nád kjasbd pull dev
+// ádsd
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
