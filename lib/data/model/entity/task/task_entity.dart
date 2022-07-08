@@ -80,4 +80,4 @@ class TaskEntity extends Equatable {
       createdAt: createdAt ?? this.createdAt,
     );
   }
-}
+} //dá
