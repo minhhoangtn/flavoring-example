@@ -60,3 +60,63 @@ jobs:
             name: flavoring-prod
             path: build/app/outputs/flutter-apk/app-prod-release.apk
 
+        - name: Action detail
+          run: |
+            echo "Event name: ${{github.event.name}}"
+            echo "Repository: ${{github.repositoryUrl}}"
+            echo "Soure branch: ${{github.head_ref}}"
+            echo "Target branch: ${{github.base_ref}}
+        - name: Post to Google chat
+          run: |
+            curl --location --request POST '${{ secrets.GOOGLECHATHOOK }}' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+                "cards": [
+                    {
+                        "header": {
+                            "title": "${{github.event.name}}",
+                        },
+                        "sections": [
+                            {
+                                "widgets": [
+                                    {
+                                       "keyValue": {
+                                            "topLabel": "Repository",
+                                            "content": "${{ github.repositoryUrl}}"
+                                        },
+                                     },
+                                     {
+                                       "keyValue": {
+                                            "topLabel": "Source branch",
+                                            "content": "${{ github.head_ref }}"
+                                        }
+                                     },
+                                     {
+                                       "keyValue": {
+                                            "topLabel": "Target branch",
+                                            "content": "${{ github.base_ref }}"
+                                        }
+                                     },
+                                     {
+                                        "buttons": [
+                                            {
+                                                "textButton": {
+                                                    "text": "Download link",
+                                                    "onClick": {
+                                                        "openLink": {
+                                                            "url": "https://www.google.com/"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+
+
+
