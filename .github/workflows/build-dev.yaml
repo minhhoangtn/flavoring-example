@@ -17,7 +17,7 @@ jobs:
           channel: 'stable'
       - run: echo Install Flutter stable channel Successfully!!
       - name: Analyze Code and Testing
-        run: : |
+        run: |
           flutter pub get
           flutter pub run build_runner build --delete-conflicting-outputs
           flutter analyze
