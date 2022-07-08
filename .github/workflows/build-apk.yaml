@@ -1,4 +1,4 @@
-name: Build Apk for DEV flavor
+name: Build Apk
 
 on:
   pull_request:
@@ -25,38 +25,38 @@ jobs:
             flutter analyze
             flutter test
 
-  build-apk:
-    runs-on: ubuntu-latest
-    needs: ["analyze"]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-      - run: echo Install Flutter stable channel Successfully!!
-      - name: Setup
-        run: |
-          flutter clean
-          flutter pub get
-          flutter pub run build_runner build --delete-conflicting-outputs
-      - name: Build DEV
-        if: github.base_ref == 'develop'
-        run: flutter build apk --flavor dev -t lib/main_dev.dart
-      - name: BUILD PROD
-        if: github.base_ref == 'product'
-        run: flutter build apk --flavor prod -t lib/main_prod.dart
+    build-apk:
+      runs-on: ubuntu-latest
+      needs: ["analyze"]
+      steps:
+        - uses: actions/checkout@v2
+        - name: Install Flutter
+          uses: subosito/flutter-action@v2
+          with:
+            channel: 'stable'
+        - run: echo Install Flutter stable channel Successfully!!
+        - name: Setup
+          run: |
+            flutter clean
+            flutter pub get
+            flutter pub run build_runner build --delete-conflicting-outputs
+        - name: Build DEV
+          if: github.base_ref == 'develop'
+          run: flutter build apk --flavor dev -t lib/main_dev.dart
+        - name: BUILD PROD
+          if: github.base_ref == 'product'
+          run: flutter build apk --flavor prod -t lib/main_prod.dart
 
-       - name: Release DEV
-         uses: actions/upload-artifact@v3
-         if: github.base_ref == 'develop'
-         with:
-           name: flavoring-dev
-           path: build/app/outputs/flutter-apk/app-dev-release.apk
-      - name: Release Prod
-        uses: actions/upload-artifact@v3
-        if: github.base_ref == 'product'
-        with:
-          name: flavoring-prod
-          path: build/app/outputs/flutter-apk/app-prod-release.apk
+        - name: Release DEV
+          uses: actions/upload-artifact@v3
+          if: github.base_ref == 'develop'
+          with:
+            name: flavoring-dev
+            path: build/app/outputs/flutter-apk/app-dev-release.apk
+        - name: Release Prod
+          uses: actions/upload-artifact@v3
+          if: github.base_ref == 'product'
+          with:
+            name: flavoring-prod
+            path: build/app/outputs/flutter-apk/app-prod-release.apk
 
