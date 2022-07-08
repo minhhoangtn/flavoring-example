@@ -65,7 +65,7 @@ jobs:
             echo "Event name: ${{github.event.name}}"
             echo "Repository: ${{github.repositoryUrl}}"
             echo "Soure branch: ${{github.head_ref}}"
-            echo "Target branch: ${{github.base_ref}}
+            echo "Target branch: ${{github.base_ref}}"
         - name: Post to Google chat
           run: |
             curl --location --request POST '${{ secrets.GOOGLECHATHOOK }}' \
