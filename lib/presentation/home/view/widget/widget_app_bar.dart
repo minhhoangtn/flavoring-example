@@ -79,7 +79,7 @@ class WidgetAppBar extends AppBar {
     return Row(
       children: [
         Text(
-          'Taskker',
+          'Todoist',
           style: AppTextStyle.orange(30, weight: FontWeight.bold),
         )
       ],

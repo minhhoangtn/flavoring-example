@@ -36,6 +36,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(100))),
               width: double.infinity,
+              alignment: Alignment.bottomRight,
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+              child: Text(
+                'ĐĂNG KÝ',
+                style: AppTextStyle.white(20, weight: FontWeight.bold),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
