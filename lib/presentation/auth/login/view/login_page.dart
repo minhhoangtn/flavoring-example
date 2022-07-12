@@ -30,20 +30,7 @@ class _LoginPageState extends State<LoginPage> {
         reverse: true,
         child: Column(
           children: [
-            Container(
-              height: 250,
-              decoration: BoxDecoration(
-                  color: AppColor.orangeFF,
-                  borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(100))),
-              width: double.infinity,
-              alignment: Alignment.bottomRight,
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-              child: Text(
-                'ĐĂNG NHẬP',
-                style: AppTextStyle.white(20, weight: FontWeight.bold),
-              ),
-            ),
+            _buildHeader(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Form(
@@ -137,6 +124,34 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  _buildHeader() {
+    return Container(
+      height: 250,
+      decoration: BoxDecoration(
+          color: AppColor.orangeFF,
+          borderRadius:
+              const BorderRadius.only(bottomLeft: Radius.circular(100))),
+      width: double.infinity,
+      alignment: Alignment.bottomRight,
+      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          const Icon(
+            Icons.filter_vintage_outlined,
+            color: Colors.white,
+            size: 80,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'ĐĂNG NHẬP',
+            style: AppTextStyle.white(20, weight: FontWeight.bold),
+          ),
+        ],
       ),
     );
   }
