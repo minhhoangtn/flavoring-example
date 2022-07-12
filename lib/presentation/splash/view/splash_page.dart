@@ -13,12 +13,16 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  String title = '';
+
   @override
   void initState() {
     super.initState();
-
-    Timer(const Duration(seconds: 3),
-        () => context.read<AuthBloc>().add(const AppStarted()));
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+      const fullyTitle = 'Todoist';
+      await animatedTitle(fullyTitle);
+      context.read<AuthBloc>().add(const AppStarted());
+    });
   }
 
   @override
@@ -27,9 +31,17 @@ class _SplashPageState extends State<SplashPage> {
       backgroundColor: AppColor.orangeFF,
       body: Center(
           child: Text(
-        'Todoist',
+        title,
         style: AppTextStyle.white(50, weight: FontWeight.bold),
       )),
     );
+  }
+
+  Future<void> animatedTitle(String fullyTitle) async {
+    for (int i = 0; i < fullyTitle.length; i++) {
+      title += fullyTitle[i];
+      setState(() {});
+      await Future.delayed(const Duration(milliseconds: 200));
+    }
   }
 }
