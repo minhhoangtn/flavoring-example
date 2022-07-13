@@ -1,0 +1,38 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+FLAVOR = ENV["FLAVOR"]
+PREFIX = ENV["PREFIX"]
+FILE_PATH = "../build/app/outputs/flutter-apk/app-#{PREFIX}-release.apk"
+WEB_HOOK=ENV["GOOGLE_CHAT_HOOK"]
+
+platform :android do
+  desc "Upload APK to Google chat through Webhook"
+  lane :upload do
+    diawi(token: ENV["DIAWI_TOKEN"], file: "#{FILE_PATH}")
+    google_chat(
+          imageUrl: 'https://lh6.googleusercontent.com/proxy/Lul4ETxVNYOwDZTs9d94zqD_KFx78U6w43DZtBDKbvQLOeHBOr3vKjIG1jxpZbD83z7VmQIAh-m-Jl7qy1kerbFqrLcP0NY',
+          webhook: "#{WEB_HOOK}",
+          title: 'Fastlane Distribute',
+          description: "App APK with flavor #{FLAVOR}",
+          section1Title: 'Android App',
+          section1Description: 'Here your APK, Download below',
+          buttonTitle: "Download APK",
+          buttonUrl: lane_context[SharedValues::UPLOADED_FILE_LINK_TO_DIAWI]
+        )
+  end
+end
