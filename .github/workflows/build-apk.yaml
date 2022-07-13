@@ -50,6 +50,7 @@ jobs:
             bundle update
         - name: Deploy to Google Chat
           run: |
+            cd android
             bundle exec fastlane upload --env dev
 
 #        - name: Build DEV
