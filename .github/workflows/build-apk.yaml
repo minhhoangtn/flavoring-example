@@ -43,6 +43,12 @@ jobs:
             flutter clean
             flutter pub get
             flutter pub run build_runner build --delete-conflicting-outputs
+        - name: Build DEV
+#          if: github.base_ref == 'develop'
+          run: flutter build apk --flavor dev -t lib/main_dev.dart
+#        - name: BUILD PROD
+#          if: github.base_ref == 'product'
+#          run: flutter build apk --flavor prod -t lib/main_prod.dart
         - name: Setup Fastlane
           run: |
             sudo gem install bundler
@@ -53,12 +59,7 @@ jobs:
             cd android
             bundle exec fastlane upload --env dev
 
-#        - name: Build DEV
-#          if: github.base_ref == 'develop'
-#          run: flutter build apk --flavor dev -t lib/main_dev.dart
-#        - name: BUILD PROD
-#          if: github.base_ref == 'product'
-#          run: flutter build apk --flavor prod -t lib/main_prod.dart
+
 #
 #        - name: Release DEV
 #          uses: actions/upload-artifact@v3
