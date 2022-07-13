@@ -18,7 +18,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       const fullyTitle = 'Todoist';
       await animatedTitle(fullyTitle);
       context.read<AuthBloc>().add(const AppStarted());
