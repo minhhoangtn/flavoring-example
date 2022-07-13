@@ -1,6 +1,9 @@
 name: Build Apk
 
 on:
+  push:
+    branches:
+      - fastlane
   pull_request:
     branches:
       - develop
@@ -35,88 +38,97 @@ jobs:
           with:
             channel: 'stable'
         - run: echo Install Flutter stable channel Successfully!!
-        - name: Setup
+        - name: Setup Flutter Project
           run: |
             flutter clean
             flutter pub get
             flutter pub run build_runner build --delete-conflicting-outputs
-        - name: Build DEV
-          if: github.base_ref == 'develop'
-          run: flutter build apk --flavor dev -t lib/main_dev.dart
-        - name: BUILD PROD
-          if: github.base_ref == 'product'
-          run: flutter build apk --flavor prod -t lib/main_prod.dart
-
-        - name: Release DEV
-          uses: actions/upload-artifact@v3
-          if: github.base_ref == 'develop'
-          with:
-            name: flavoring-dev
-            path: build/app/outputs/flutter-apk/app-dev-release.apk
-        - name: Release Prod
-          uses: actions/upload-artifact@v3
-          if: github.base_ref == 'product'
-          with:
-            name: flavoring-prod
-            path: build/app/outputs/flutter-apk/app-prod-release.apk
-
-        - name: Action detail
+        - name: Setup Fastlane
           run: |
-            echo "Event name: ${{github.event.name}}"
-            echo "Repository: ${{github.repositoryUrl}}"
-            echo "Soure branch: ${{github.head_ref}}"
-            echo "Target branch: ${{github.base_ref}}"
-        - name: Post to Google chat
+            gem install bundler
+            cd android
+            bundle update
+        - name: Deploy to Google Chat
           run: |
-            curl --location --request POST '${{ secrets.GOOGLECHATHOOK }}' \
-            --header 'Content-Type: application/json' \
-            --data-raw '{
-                "cards": [
-                    {
-                        "header": {
-                            "title": "${{github.event.name}}",
-                        },
-                        "sections": [
-                            {
-                                "widgets": [
-                                    {
-                                       "keyValue": {
-                                            "topLabel": "Repository",
-                                            "content": "${{ github.repositoryUrl}}"
-                                        },
-                                     },
-                                     {
-                                       "keyValue": {
-                                            "topLabel": "Source branch",
-                                            "content": "${{ github.head_ref }}"
-                                        }
-                                     },
-                                     {
-                                       "keyValue": {
-                                            "topLabel": "Target branch",
-                                            "content": "${{ github.base_ref }}"
-                                        }
-                                     },
-                                     {
-                                        "buttons": [
-                                            {
-                                                "textButton": {
-                                                    "text": "Download link",
-                                                    "onClick": {
-                                                        "openLink": {
-                                                            "url": "https://www.google.com/"
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }'
+            bundle exec fastlane upload --env dev
 
-
-
+#        - name: Build DEV
+#          if: github.base_ref == 'develop'
+#          run: flutter build apk --flavor dev -t lib/main_dev.dart
+#        - name: BUILD PROD
+#          if: github.base_ref == 'product'
+#          run: flutter build apk --flavor prod -t lib/main_prod.dart
+#
+#        - name: Release DEV
+#          uses: actions/upload-artifact@v3
+#          if: github.base_ref == 'develop'
+#          with:
+#            name: flavoring-dev
+#            path: build/app/outputs/flutter-apk/app-dev-release.apk
+#        - name: Release Prod
+#          uses: actions/upload-artifact@v3
+#          if: github.base_ref == 'product'
+#          with:
+#            name: flavoring-prod
+#            path: build/app/outputs/flutter-apk/app-prod-release.apk
+#
+#        - name: Action detail
+#          run: |
+#            echo "Event name: ${{github.event.name}}"
+#            echo "Repository: ${{github.repositoryUrl}}"
+#            echo "Soure branch: ${{github.head_ref}}"
+#            echo "Target branch: ${{github.base_ref}}"
+#        - name: Post to Google chat
+#          run: |
+#            curl --location --request POST '${{ secrets.GOOGLECHATHOOK }}' \
+#            --header 'Content-Type: application/json' \
+#            --data-raw '{
+#                "cards": [
+#                    {
+#                        "header": {
+#                            "title": "${{github.event.name}}",
+#                        },
+#                        "sections": [
+#                            {
+#                                "widgets": [
+#                                    {
+#                                       "keyValue": {
+#                                            "topLabel": "Repository",
+#                                            "content": "${{ github.repositoryUrl}}"
+#                                        },
+#                                     },
+#                                     {
+#                                       "keyValue": {
+#                                            "topLabel": "Source branch",
+#                                            "content": "${{ github.head_ref }}"
+#                                        }
+#                                     },
+#                                     {
+#                                       "keyValue": {
+#                                            "topLabel": "Target branch",
+#                                            "content": "${{ github.base_ref }}"
+#                                        }
+#                                     },
+#                                     {
+#                                        "buttons": [
+#                                            {
+#                                                "textButton": {
+#                                                    "text": "Download link",
+#                                                    "onClick": {
+#                                                        "openLink": {
+#                                                            "url": "https://www.google.com/"
+#                                                        }
+#                                                    }
+#                                                }
+#                                            }
+#                                        ]
+#                                    }
+#                                ]
+#                            }
+#                        ]
+#                    }
+#                ]
+#            }'
+#
+#
+#
