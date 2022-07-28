@@ -1,6 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flavoring/configuration/style/style_barrel.dart';
-import 'package:flavoring/core/routing/app_navigator.dart';
+import 'package:flavoring/core/utils/utils_barrel.dart';
 import 'package:flutter/material.dart';
 
 class WidgetSnackBar {

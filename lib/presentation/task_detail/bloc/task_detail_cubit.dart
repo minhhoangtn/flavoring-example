@@ -1,11 +1,11 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flavoring/data/model/entity/task/task_entity.dart';
 import 'package:flavoring/data/repository/repository_barrel.dart';
 import 'package:flavoring/core/extension/extension_barrel.dart';
-import 'package:flavoring/core/notification_handler.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
+import 'package:flavoring/core/utils/utils_barrel.dart';
 
 part 'task_detail_state.dart';
 
@@ -24,29 +24,20 @@ class TaskDetailCubit extends Cubit<TaskDetailState> {
 
     if (isReceiveNotification) {
       await localNotificationsPlugin.cancel(currentState.id.hashCode);
-      final androidChannel = androidLocalChannel;
+
       try {
-        await localNotificationsPlugin.zonedSchedule(
-            currentState.id.hashCode,
-            currentState.title,
-            currentState.note,
-            tz.TZDateTime.fromMillisecondsSinceEpoch(
-                tz.getLocation('Etc/GMT+8'), currentState.deadline),
-            NotificationDetails(
-                android: AndroidNotificationDetails(
-                    androidChannel.id, androidChannel.name,
-                    channelDescription: androidChannel.description,
-                    importance: Importance.max)),
-            payload: currentState.id,
-            androidAllowWhileIdle: true,
-            uiLocalNotificationDateInterpretation:
-                UILocalNotificationDateInterpretation.absoluteTime);
+        await LocalNotificationUtils.scheduleNotification(
+            id: currentState.id.hashCode,
+            epocTime: currentState.deadline,
+            title: currentState.title,
+            body: currentState.note,
+            payload: jsonEncode(currentState.toJson()));
       } catch (_) {
         emit(state.copyWith(
             newState: currentState.copyWith(
                 isReceiveNotification: !currentState.isReceiveNotification),
             updateStatus: UpdateTaskStatus.failure,
-            errorMessage: 'Có lỗi xảy ra với notification'));
+            errorMessage: 'Deadline đã quá hạn'));
         return;
       }
     } else {

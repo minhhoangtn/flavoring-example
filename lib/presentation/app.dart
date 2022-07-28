@@ -1,20 +1,20 @@
+import 'dart:convert';
+
 import 'package:flavoring/configuration/style/app_theme.dart';
-import 'package:flavoring/core/notification_handler.dart';
-import 'package:flavoring/core/routing/app_navigator.dart';
-import 'package:flavoring/core/routing/app_router.dart';
+import 'package:flavoring/core/utils/utils_barrel.dart';
+import 'package:flavoring/configuration/routing/app_router.dart';
+import 'package:flavoring/data/model/entity/task/task_entity.dart';
 import 'package:flavoring/data/repository/auth_repository.dart';
-
 import 'package:flavoring/core/injection.dart';
-import 'package:flavoring/core/utils/keyboard_utils.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'auth/bloc/auth_bloc.dart';
 
 class MyApp extends StatefulWidget {
-  final String initialRoute;
-  const MyApp({Key? key, required this.initialRoute}) : super(key: key);
+  final NotificationAppLaunchDetails? notificationDetail;
+  const MyApp({Key? key, this.notificationDetail}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -47,7 +47,6 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: AppNavigator.rootKey,
         theme: appTheme.themeData,
         onGenerateRoute: AppRoute.generateRoute,
-        initialRoute: widget.initialRoute,
         builder: (context, child) {
           return BlocListener<AuthBloc, AuthState>(
               listener: (context, state) async {
@@ -55,9 +54,17 @@ class _MyAppState extends State<MyApp> {
                   AppNavigator.currentState!.pushNamedAndRemoveUntil(
                       RouteDefine.login, (route) => false);
                 } else if (state is Authenticated) {
-                  await setupLocalNotification(onTapNotification: (payload) {});
+                  await LocalNotificationUtils.initialize(
+                      onTapNotification: _handleTaskNotification);
+
                   AppNavigator.currentState!.pushNamedAndRemoveUntil(
                       RouteDefine.home, (route) => false);
+
+                  if (widget.notificationDetail?.didNotificationLaunchApp ==
+                      true) {
+                    final payload = widget.notificationDetail!.payload;
+                    _handleTaskNotification(payload);
+                  }
                 }
               },
               child: GestureDetector(
@@ -65,6 +72,16 @@ class _MyAppState extends State<MyApp> {
         },
       ),
     );
+  }
+
+  _handleTaskNotification(String? payload) {
+    if (payload != null) {
+      try {
+        final task = TaskEntity.fromJson(jsonDecode(payload));
+        AppNavigator.currentState!
+            .pushNamed(RouteDefine.taskDetail, arguments: task);
+      } catch (_) {}
+    }
   }
 }
 

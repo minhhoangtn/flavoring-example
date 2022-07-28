@@ -1,6 +1,6 @@
 import 'package:flavoring/configuration/style/style_barrel.dart';
 import 'package:flavoring/core/extension/extension_barrel.dart';
-import 'package:flavoring/core/routing/app_router.dart';
+import 'package:flavoring/configuration/routing/app_router.dart';
 import 'package:flavoring/data/model/entity/task/task_entity.dart';
 import 'package:flavoring/presentation/common/common_barrel.dart';
 
