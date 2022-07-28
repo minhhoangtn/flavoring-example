@@ -60,7 +60,7 @@ dependencies:
   intl: ^0.17.0
 
   # UI
-  another_flushbar: 1.10.28
+  another_flushbar: ^1.10.29
 
   uuid: ^3.0.6
 

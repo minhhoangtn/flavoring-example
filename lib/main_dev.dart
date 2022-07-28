@@ -1,5 +1,5 @@
 import 'package:flavoring/configuration/environment/env.dart';
-import 'package:flavoring/core/routing/app_router.dart';
+import 'package:flavoring/configuration/routing/app_router.dart';
 
 import 'package:flavoring/presentation/app.dart';
 import 'package:flavoring/core/injection.dart';

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flavoring/data/model/entity/task/task_entity.dart';
@@ -37,7 +39,7 @@ class TaskDetailCubit extends Cubit<TaskDetailState> {
                     androidChannel.id, androidChannel.name,
                     channelDescription: androidChannel.description,
                     importance: Importance.max)),
-            payload: currentState.id,
+            payload: jsonEncode(currentState.toJson()),
             androidAllowWhileIdle: true,
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.absoluteTime);
