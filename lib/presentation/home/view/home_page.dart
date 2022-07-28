@@ -1,4 +1,3 @@
-
 import 'package:flavoring/data/model/entity/user/user_entity.dart';
 import 'package:flavoring/presentation/auth/bloc/auth_bloc.dart';
 import 'package:flavoring/presentation/home/bloc/home_cubit.dart';
@@ -51,22 +50,29 @@ class _HomePageState extends State<HomePage> {
                                 undoneTaskCount: state.undoneTaskCount,
                               ),
                               Expanded(
-                                child: ListView.separated(
-                                  separatorBuilder: (_, index) =>
-                                      const SizedBox(height: 10),
-                                  itemBuilder: (context, index) {
-                                    final task = state.filteredTasks[index];
-                                    return WidgetTaskItem(
-                                      item: task,
-                                      onDeletedConfirm: () =>
-                                          cubit.deleteTask(task.id),
-                                      onChangeStatus: () =>
-                                          cubit.changeTaskStatus(task.id),
-                                      onItemChanged: () =>
-                                          cubit.fetchList(user.id),
-                                    );
+                                child: RefreshIndicator(
+                                  onRefresh: () async {
+                                    cubit.fetchList(user.id);
                                   },
-                                  itemCount: state.filteredTasks.length,
+                                  child: ListView.separated(
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    separatorBuilder: (_, index) =>
+                                        const SizedBox(height: 10),
+                                    itemBuilder: (context, index) {
+                                      final task = state.filteredTasks[index];
+                                      return WidgetTaskItem(
+                                        item: task,
+                                        onDeletedConfirm: () =>
+                                            cubit.deleteTask(task.id),
+                                        onChangeStatus: () =>
+                                            cubit.changeTaskStatus(task.id),
+                                        onItemChanged: () =>
+                                            cubit.fetchList(user.id),
+                                      );
+                                    },
+                                    itemCount: state.filteredTasks.length,
+                                  ),
                                 ),
                               ),
                             ],
