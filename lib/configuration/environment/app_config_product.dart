@@ -5,10 +5,8 @@ class AppConfigProduct extends AppConfig {
   String get appName => 'Flavoring Prod';
 
   @override
-  // TODO: implement baseUrl
-  String get baseUrl => throw UnimplementedError();
+  String get baseUrl => '';
 
   @override
-  // TODO: implement flavor
   AppEnv get flavor => AppEnv.prod;
 }

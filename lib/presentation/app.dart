@@ -9,6 +9,7 @@ import 'package:flavoring/core/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'auth/bloc/auth_bloc.dart';
 
@@ -47,6 +48,13 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: AppNavigator.rootKey,
         theme: appTheme.themeData,
         onGenerateRoute: AppRoute.generateRoute,
+        locale: const Locale('vi'),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [Locale('vi'), Locale('en')],
         builder: (context, child) {
           return BlocListener<AuthBloc, AuthState>(
               listener: (context, state) async {
