@@ -1,9 +1,6 @@
 name: Build Apk
 
 on:
-  push:
-    branches:
-      - fastlane
   pull_request:
     branches:
       - develop
